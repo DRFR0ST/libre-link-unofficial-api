@@ -1,9 +1,9 @@
 name: 🚀 Release
 
 on:
-  create:
-    tags:
-      - v*
+  release:
+    types:
+      - created
 
 jobs:
   build:
@@ -41,14 +41,3 @@ jobs:
           LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
           LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
           LIBRE_LINK_UP_VERSION: ${{ secrets.LIBRE_LINK_UP_VERSION }}
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
-          draft: false
-          prerelease: false
