@@ -47,6 +47,13 @@ export class LibreLinkClient {
         }),
       });
 
+      // If the status is 2, means the credentials are invalid.
+      if(response.status === 2)
+        throw new Error("Invalid credentials. Please ensure that the email and password work with the LibreLinkUp app.");
+
+      if(!response.data) 
+        throw new Error("No data returned from Libre Link Up API.");
+
       // If the response contains a redirect, update the region and try again.
       if("redirect" in response.data) {
         this.verbose("Redirecting to region:", response.data.region);
@@ -56,13 +63,6 @@ export class LibreLinkClient {
         
         return await this.login();
       }
-  
-      // If the status is 2, means the credentials are invalid.
-      if(response.status === 2)
-        throw new Error("Invalid credentials. Please ensure that the email and password work with the LibreLinkUp app.");
-  
-      if(!response.data) 
-        throw new Error("No data returned from Libre Link Up API.");
 
       // Set the access token for future requests.
       this.accessToken = response.data.authTicket?.token;
