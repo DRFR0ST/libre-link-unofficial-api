@@ -19,12 +19,12 @@ jobs:
     - name: Install dependencies
       run: bun install
 
+    - name: Build library
+      run: bun run build
+
     - name: Run tests
       uses: nick-fields/retry@v2
       with:
         timeout_minutes: 5
         max_attempts: 3
         command: bun run test
-    
-    - name: Build library
-      run: bun run build
