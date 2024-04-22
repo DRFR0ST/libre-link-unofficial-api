@@ -29,9 +29,19 @@ const client = new LibreLinkClient({ email: 'your-libre-link-up-email', password
 Please make sure that the email and password work with the [Libre Link Up](https://librelinkup.com/) mobile application before using them with this library.
 
 ## 📚 API
-The `LibreLinkClient` provides access to following methods:
+
+### Options
+The `LibreLinkClient` constructor accepts the following options:
+
+Option | Description | Default
+--- | --- | ---
+`email` | The email address for your Libre Link Up account. Will fallback to env variables, if not provided. | `undefined`
+`password` | The password for your Libre Link Up account. Will fallback to env variables, if not provided. | `undefined`
+`patientId` | The patient ID for the user. Will fallback to env variables, if not provided. | `undefined`
+`cache` | The cache object to store the user data. | `true`
 
 ### Methods
+The `LibreLinkClient` provides access to the following methods:
 
 Method | Description | Status
 --- | --- | ---
