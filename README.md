@@ -6,6 +6,8 @@
 
 Welcome to the unofficial Node.js API for Libre Link Up! This library is designed to help you interact with your CGM data from your Freestyle Libre 2/3 stored inside Abbott's database directly from your Node.js applications. Please note that this library is not officially supported by Abbott/Freestyle and was reverse engineered for educational purposes.
 
+⚠️ The library is in alpha and may not work as expected, breaking changes may occur. Please open an issue if you encounter any problems.
+
 ## 🚀 Getting Started
 
 First, install the library using npm:
@@ -49,6 +51,7 @@ Method | Description | Status
 `me` | Get the current cached user. | ✅
 `read` | Get the raw reading. | ⏳
 `stream` | Stream the readings. | ⏳
+`fetchConnections` | Fetch the connections between LinkUp account and Libre app. | ✅
 
 More methods will be added in the future. If you need a specific method, please open an issue or submit a pull request!
 
