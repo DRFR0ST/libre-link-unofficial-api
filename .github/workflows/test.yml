@@ -31,6 +31,7 @@ jobs:
       with:
         timeout_minutes: 5
         max_attempts: 3
+        retry_wait_seconds: 60
         command: bun run test
       env:
         LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
