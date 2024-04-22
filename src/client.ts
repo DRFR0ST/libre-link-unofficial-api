@@ -246,7 +246,7 @@ export class LibreLinkClient {
    * @param key The key to cache the value under.
    * @param value The value to cache.
    */
-  public setCache(key: string, value: any) {
+  private setCache(key: string, value: any) {
     if(!this.options.cache) return;
 
     this.cache.set(key, value);
