@@ -59,6 +59,67 @@ export interface LibreErrorResponse extends LibreResponse {
   };
 };
 
+export interface LibreConnectionResponse extends LibreResponse {
+  status: number;
+  data: {
+    connection: LibreConnection;
+    activeSensors: LibreActiveSensor[];
+    graphData: GlucoseItem[];
+  };
+  ticket: Ticket;
+}
+
+export interface LibreActiveSensor {
+  sensor: LibreSensor;
+  device: LibreDevice;
+}
+
+interface LibreDevice {
+  did: string;
+  dtid: number;
+  v: string;
+  ll: number;
+  hl: number;
+  u: number;
+  fixedLowAlarmValues: LibreFixedLowAlarmValues;
+  alarms: boolean;
+}
+
+interface LibreFixedLowAlarmValues {
+  mgdl: number;
+  mmoll: number;
+}
+
+interface LibreSensor {
+  deviceId: string;
+  sn: string;
+  a: number;
+  w: number;
+  pt: number;
+}
+
+/**
+ * @description A connection object from the Libre Link Up API.
+ */
+export interface LibreConnection {
+  id: string;
+  patientId: string;
+  country: string;
+  status: number;
+  firstName: string;
+  lastName: string;
+  targetLow: number;
+  targetHigh: number;
+  uom: number;
+  sensor: LibreSensor;
+  alarmRules: LibreAlarmRules;
+  glucoseMeasurement: GlucoseItem;
+  glucoseItem: GlucoseItem;
+  glucoseAlarm: null;
+  patientDevice: LibreDevice;
+  created: number;
+}
+
 /**
  * @description A user object from the Libre Link Up API.
  */
@@ -157,3 +218,67 @@ interface LibreDevice {
   type: number;
   uploadDate: number;
 }
+
+interface LibreAlarmRules {
+  c: boolean;
+  h: H;
+  f: F;
+  l: F;
+  nd: Nd;
+  p: number;
+  r: number;
+  std: Std;
+}
+
+interface F {
+  th: number;
+  thmm: number;
+  d: number;
+  tl: number;
+  tlmm: number;
+  on?: boolean;
+}
+
+interface H {
+  on: boolean;
+  th: number;
+  thmm: number;
+  d: number;
+  f: number;
+}
+
+interface Nd {
+  i: number;
+  r: number;
+  l: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Std {}
+
+export interface GlucoseItem {
+  FactoryTimestamp: string;
+  Timestamp: string;
+  type: number;
+  ValueInMgPerDl: number;
+  TrendArrow?: number;
+  TrendMessage?: null;
+  MeasurementColor: number;
+  GlucoseUnits: number;
+  Value: number;
+  isHigh: boolean;
+  isLow: boolean;
+}
+
+interface Ticket {
+  token: string;
+  expires: number;
+  duration: number;
+}
+
+/**
+ * Attribution for the types.
+ * @description The types were borrowed from the DiaKEM libre-link-up-api-client project.
+ * @see {@link https://github.com/DiaKEM/libre-link-up-api-client/tree/main/src/types}
+ * License: MIT License (https://github.com/DiaKEM/libre-link-up-api-client/blob/main/LICENSE)
+ */
