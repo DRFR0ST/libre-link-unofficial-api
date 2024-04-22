@@ -1,5 +1,5 @@
 import { config } from "./config";
-import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser } from "./types";
+import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection } from "./types";
 import { parseUser } from "./utils";
 
 /**
@@ -8,14 +8,20 @@ import { parseUser } from "./utils";
 export class LibreLinkClient {
   private apiUrl = config.apiUrl;
   private accessToken: string | null = null;
-  private patientId: string | null = null;
+  private patientId: string | null = config.patientId || null;
 
   // A cache for storing fetched data.
   private cache = new Map<string, any>();
 
-  constructor(private options?: { email: string; password: string; }) {
+  constructor(private options: LibreLinkClientOptions = DEFAULT_OPTIONS) {
     if (!options?.email && !config.credentials.email)
       throw new Error("Libre Link Up credentials are missing.");
+
+    if(options?.patientId)
+      this.patientId = options.patientId;
+
+    // Merge the options with the default options.
+    this.options = { ...DEFAULT_OPTIONS, ...options };
   }
 
   /**
@@ -46,7 +52,7 @@ export class LibreLinkClient {
           password
         }),
       });
-
+  
       // If the status is 2, means the credentials are invalid.
       if(response.status === 2)
         throw new Error("Invalid credentials. Please ensure that the email and password work with the LibreLinkUp app.");
@@ -68,7 +74,7 @@ export class LibreLinkClient {
       this.accessToken = response.data.authTicket?.token;
 
       // Cache the user data for future use. Log in again to refresh the user data.
-      this.cache.set("user", parseUser(response.data.user));
+      this.setCache("user", parseUser(response.data.user));
 
       this.verbose("Logged into Libre Link Up API.");
 
@@ -100,10 +106,20 @@ export class LibreLinkClient {
   /**
    * @description Get the connections from the Libre Link Up API.
    */
-  private async fetchConnections() {
+  public async fetchConnections() {
     try {
+      if(this.cache.has("connections"))
+        return this.cache.get("connections");
+
       // Fetch the connections from the Libre Link Up API.
-      return await this._fetcher(LibreLinkUpEndpoints.Connections);
+      const connections = await this._fetcher(LibreLinkUpEndpoints.Connections);
+
+      this.verbose("Fetched connections from Libre Link Up API.", JSON.stringify(connections, null, 2));
+
+      // Cache the connections for future use.
+      this.setCache("connections", connections);
+
+      return connections;
     } catch(err) {
       console.error(err);
       throw new Error("Error fetching connections from Libre Link Up API.");
@@ -121,7 +137,11 @@ export class LibreLinkClient {
       if(!connections.data?.length)
         throw new Error("No connections found. Please ensure that you have a connection with the LibreLinkUp app.");
   
-      const patientId = connections.data[0]?.patientId;
+      // Get the patient ID from the connections, or fallback to the first connection.
+      const patientId =
+        connections.data.find(
+          (connection: LibreConnection) => connection.patientId === this.patientId
+        )?.patientId || connections.data[0].patientId;
 
       this.verbose("Using patient ID:", patientId);
       return patientId;
@@ -190,6 +210,9 @@ export class LibreLinkClient {
       );
 
       if (!response.ok) {
+        if(response.status === 429)
+          throw new Error("Too many requests. Please wait before trying again.");
+
         throw new Error(
           `Error fetching data from Libre Link Up API. Status: ${response.status}`
         );
@@ -217,4 +240,33 @@ export class LibreLinkClient {
   private verbose(...args: any[]) {
     if (config.verbose) console.log(...args);
   }
+
+  /**
+   * @description Cache a value, if caching is enabled.
+   * @param key The key to cache the value under.
+   * @param value The value to cache.
+   */
+  public setCache(key: string, value: any) {
+    if(!this.options.cache) return;
+
+    this.cache.set(key, value);
+  }
+
+  /**
+   * @description Clear the cache.
+   */
+  public clearCache() {
+    this.cache.clear();
+  }
 }
+
+interface LibreLinkClientOptions {
+  email?: string;
+  password?: string;
+  patientId?: string;
+  cache?: boolean;
+}
+
+const DEFAULT_OPTIONS: LibreLinkClientOptions = {
+  cache: true,
+};
