@@ -16,15 +16,30 @@ jobs:
         run: bun install
 
       - name: Run tests
-        run: bun run test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: bun run test
+        env:
+          LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
+          LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
+          LIBRE_LINK_UP_VERSION: ${{ secrets.LIBRE_LINK_UP_VERSION }}
 
       - name: Build library
         run: bun run build
+        env:
+          LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
+          LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
+          LIBRE_LINK_UP_VERSION: ${{ secrets.LIBRE_LINK_UP_VERSION }}
 
       - name: Publish
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
+          LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
+          LIBRE_LINK_UP_VERSION: ${{ secrets.LIBRE_LINK_UP_VERSION }}
 
       - name: Create Release
         id: create_release
