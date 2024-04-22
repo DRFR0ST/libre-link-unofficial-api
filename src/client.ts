@@ -80,8 +80,10 @@ export class LibreLinkClient {
 
       return response as LibreLoginResponse;
     } catch(err) {
-      console.error(err);
-      throw new Error("Error logging into Libre Link Up API.");
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error logging into Libre Link Up API. ${error.message}`);
     }
   }
 
@@ -98,8 +100,10 @@ export class LibreLinkClient {
       const response = await this._fetcher(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`);
       return response;
     } catch(err) {
-      console.error(err);
-      throw new Error("Error reading data from Libre Link Up API.");
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error reading data from Libre Link Up API. ${error.message}`);
     }
   }
 
@@ -121,8 +125,10 @@ export class LibreLinkClient {
 
       return connections;
     } catch(err) {
-      console.error(err);
-      throw new Error("Error fetching connections from Libre Link Up API.");
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error fetching connections from Libre Link Up API. ${error.message}`);
     }
   }
 
@@ -130,24 +136,26 @@ export class LibreLinkClient {
    * @description Get the patient ID from the connections.
    */
   private async getPatientId() {
-    if(!this.patientId) {
-      const connections = await this.fetchConnections();
-  
-      // If there are no connections, throw an error.
-      if(!connections.data?.length)
-        throw new Error("No connections found. Please ensure that you have a connection with the LibreLinkUp app.");
-  
-      // Get the patient ID from the connections, or fallback to the first connection.
-      const patientId =
-        connections.data.find(
-          (connection: LibreConnection) => connection.patientId === this.patientId
-        )?.patientId || connections.data[0].patientId;
+    const connections = await this.fetchConnections();
 
-      this.verbose("Using patient ID:", patientId);
-      return patientId;
-    } else {
-      this.verbose("Using cached connection ID.", this.patientId);
-    }
+    // If there are no connections, throw an error.
+    if(!connections.data?.length)
+      throw new Error("No connections found. Please ensure that you have a connection with the LibreLinkUp app.");
+
+    // Get the patient ID from the connections, or fallback to the first connection.
+
+    let patientId = connections.data[0].patientId;
+
+    if(this.patientId)
+      connections.data.find(
+        (connection: LibreConnection) => connection.patientId === this.patientId
+      )?.patientId;
+
+    if(!patientId)
+      throw new Error(`Patient ID not found in connections. (${this.patientId})`);
+
+    this.verbose("Using patient ID:", patientId);
+    return patientId;
   }
 
   /**
@@ -167,8 +175,10 @@ export class LibreLinkClient {
 
       return lslApi;
     } catch(err) {
-      console.error(err);
-      throw new Error("Error finding region in Libre Link Up API.");
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error finding region in Libre Link Up API. ${error.message}`);
     }
   }
 
@@ -228,7 +238,6 @@ export class LibreLinkClient {
 
       return data;
     } catch (err) {
-      console.error(err);
       throw new Error("Error fetching data from Libre Link Up API.");
     }
   }
