@@ -29,11 +29,7 @@ const client = new LibreLinkClient({ email: 'your-libre-link-up-email', password
 Please make sure that the email and password work with the [Libre Link Up](https://librelinkup.com/) mobile application before using them with this library.
 
 ## 📚 API
-The `LibreLinkClient` provides access to various modules:
-
-- `client.login`: Interact with the login endpoint in Libre Link Up.
-- `client.me`: Get the cached current user. The login method must be called first.
-
+The `LibreLinkClient` provides access to following methods:
 
 ### Methods
 
@@ -41,7 +37,8 @@ Method | Description | Status
 --- | --- | ---
 `login` | Login to the Libre Link Up API. | ✅
 `me` | Get the current cached user. | ✅
-`read` | Get the reading. | ⏳
+`read` | Get the raw reading. | ⏳
+`stream` | Stream the readings. | ⏳
 
 More methods will be added in the future. If you need a specific method, please open an issue or submit a pull request!
 
