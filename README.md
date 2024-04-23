@@ -60,7 +60,7 @@ More methods will be added in the future. If you need a specific method, please 
 ### Create a new LibreLinkClient
 It's necessary to create a new `LibreLinkClient` instance to interact with the Libre Link Up API. Otherwise any method listed below will throw an error.
 ```js
-import { LibreLinkClient } from 'libre-link-unofficial-api
+import { LibreLinkClient } from 'libre-link-unofficial-api';
 
 const client = new LibreLinkClient({ email: 'your-libre-link-up-email', password: 'your-libre-link-up-password' });
 ```
