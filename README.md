@@ -40,7 +40,7 @@ Option | Description | Default
 `email` | The email address for your Libre Link Up account. Will fallback to env variables, if not provided. | `undefined`
 `password` | The password for your Libre Link Up account. Will fallback to env variables, if not provided. | `undefined`
 `patientId` | The patient ID for the user. Will fallback to env variables, if not provided. | `undefined`
-`cache` | The cache object to store the user data. | `true`
+`cache` | Whether to enable cache for request responses received from Libre Link Up api. Data like blood glucose readings will never be cached. | `true`
 
 ### Methods
 The `LibreLinkClient` provides access to the following methods:
