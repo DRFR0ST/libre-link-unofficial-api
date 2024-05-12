@@ -5,6 +5,9 @@ import { mapObjectPropertiesToTypes } from "./utils";
 describe('LibreLinkClient', () => {
   const client: LibreLinkClient = new LibreLinkClient();
 
+  // Wait for a couple of seconds between tests to avoid 429 too many requests errors.
+  beforeEach(() => new Promise((resolve) => setTimeout(resolve, 5000)));
+
   test('should be created', () => {
     expect(client).toBeTruthy();
   });
@@ -24,7 +27,7 @@ describe('LibreLinkClient', () => {
   });
 
   test('should successfully read data', async () => {
-    const { data } = await client.read();
+    const data = await client.read();
 
     expect(data).toBeTruthy();
     expect(mapObjectPropertiesToTypes(data!)).toMatchSnapshot();
