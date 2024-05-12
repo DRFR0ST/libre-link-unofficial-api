@@ -1,6 +1,6 @@
 import { config } from "./config";
 import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse } from "./types";
-import { parseGlucoseItem, parseUser } from "./utils";
+import { parseGlucoseReading, parseUser } from "./utils";
 
 /**
  * A class for interacting with the Libre Link Up API.
@@ -100,7 +100,7 @@ export class LibreLinkClient {
       this.verbose("Fetched data from Libre Link Up API.", JSON.stringify(response, null, 2));
 
       // Parse and return the latest glucose item from the response.
-      return parseGlucoseItem(response.data?.connection.glucoseItem, response.data.connection);
+      return parseGlucoseReading(response.data?.connection.glucoseItem, response.data.connection);
     } catch(err) {
       const error = err as Error;
 

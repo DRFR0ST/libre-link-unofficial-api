@@ -20,19 +20,20 @@ export const parseUser = (user: Record<string, any>): LibreUser => ({
 export const parseUnixTimestamp = (timestamp: number) => new Date(timestamp * 1000);
 
 /**
- * @description Parse a glucose item.
- * @param item The raw glucose item coming from the server to parse.
+ * @description Parse a glucose reading.
+ * @param rawReading The raw glucose reading coming from the server to parse.
  * @param connection The connection object to use for parsing. Used for calculating isHigh and isLow.
- * @returns The parsed glucose item.
+ * @returns The parsed glucose reading.
  */
-export const parseGlucoseItem = (item: RawGlucoseReading, connection: LibreConnection): GlucoseReading => {
-    const isHigh = connection.targetHigh < item.Value;
-    const isLow = connection.targetLow > item.Value;
+export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: LibreConnection): GlucoseReading => {
+    // ! Calculates the isHigh and isLow properties based on the targetHigh and targetLow values. The two values coming from Libre Link Up seems to be incorrect.
+    const isHigh = connection.targetHigh < rawReading.Value;
+    const isLow = connection.targetLow > rawReading.Value;
 
     return {
-        timestamp: new Date(item.Timestamp),
-        value: item.Value,
-        measurementColor: item.MeasurementColor as MeasurementColor,
+        timestamp: new Date(rawReading.Timestamp),
+        value: rawReading.Value,
+        measurementColor: rawReading.MeasurementColor as MeasurementColor,
         isHigh,
         isLow,
     };
