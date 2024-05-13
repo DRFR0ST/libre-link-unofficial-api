@@ -182,16 +182,6 @@ exports[`LibreLinkClient should successfully fetch connections 1`] = `
 }
 `;
 
-exports[`LibreLinkClient should initialize with a patientId 1`] = `
-{
-  "isHigh": "boolean",
-  "isLow": "boolean",
-  "measurementColor": "number",
-  "timestamp": {},
-  "value": "number",
-}
-`;
-
 exports[`LibreLinkClient should successfully read data 1`] = `
 {
   "isHigh": "boolean",

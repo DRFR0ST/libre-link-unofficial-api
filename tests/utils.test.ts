@@ -17,12 +17,14 @@ describe('Utils', () => {
     } as unknown as LibreConnection;
 
     const glucoseReading = parseGlucoseReading(rawReading, connection);
+    
+    expect(glucoseReading).toBeTruthy();
 
-    expect(glucoseReading.isHigh).to.be(false);
-    expect(glucoseReading.isLow).to.be(false);
-    expect(glucoseReading.measurementColor).to.be(MeasurementColor.Green);
-    expect(glucoseReading.timestamp).to.be.a(Date);
-    expect(glucoseReading.value).to.be(100);
+    expect(glucoseReading.isHigh).toBe(false);
+    expect(glucoseReading.isLow).toBe(false);
+    expect(glucoseReading.measurementColor).toBe("Green");
+    expect(glucoseReading.timestamp instanceof Date).toBe(true);
+    expect(glucoseReading.value).toBe(100);
   });
 
   test('should parse raw low glucose reading', () => {
@@ -39,11 +41,11 @@ describe('Utils', () => {
 
     const glucoseReading = parseGlucoseReading(rawReading, connection);
 
-    expect(glucoseReading.isHigh).to.be(false);
-    expect(glucoseReading.isLow).to.be(true);
-    expect(glucoseReading.measurementColor).to.be(MeasurementColor.Red);
-    expect(glucoseReading.timestamp).to.be.a(Date);
-    expect(glucoseReading.value).to.be(43);
+    expect(glucoseReading.isHigh).toBe(false);
+    expect(glucoseReading.isLow).toBe(true);
+    expect(glucoseReading.measurementColor).toBe("Red");
+    expect(glucoseReading.timestamp instanceof Date).toBe(true);
+    expect(glucoseReading.value).toBe(43);
   });
 
   test('should parse raw high glucose reading', () => {
@@ -60,10 +62,10 @@ describe('Utils', () => {
 
     const glucoseReading = parseGlucoseReading(rawReading, connection);
 
-    expect(glucoseReading.isHigh).to.be(true);
-    expect(glucoseReading.isLow).to.be(false);
-    expect(glucoseReading.measurementColor).to.be(MeasurementColor.Yellow);
-    expect(glucoseReading.timestamp).to.be.a(Date);
-    expect(glucoseReading.value).to.be(242);
+    expect(glucoseReading.isHigh).toBe(true);
+    expect(glucoseReading.isLow).toBe(false);
+    expect(glucoseReading.measurementColor).toBe("Yellow");
+    expect(glucoseReading.timestamp instanceof Date).toBe(true);
+    expect(glucoseReading.value).toBe(242);
   });
 });

@@ -27,16 +27,18 @@ export const parseUnixTimestamp = (timestamp: number) => new Date(timestamp * 10
  */
 export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: LibreConnection): GlucoseReading => {
     // ! Calculates the isHigh and isLow properties based on the targetHigh and targetLow values. The two values coming from Libre Link Up seems to be incorrect.
-    const isHigh = connection.targetHigh < rawReading.Value;
-    const isLow = connection.targetLow > rawReading.Value;
-
-    return {
+    const isHigh = connection?.targetHigh < rawReading.Value;
+    const isLow = connection?.targetLow > rawReading.Value;
+   
+    const parsedReading = Object.freeze({
         timestamp: new Date(rawReading.Timestamp),
         value: rawReading.Value,
         measurementColor: rawReading.MeasurementColor as MeasurementColor,
         isHigh,
         isLow,
-    };
+    });
+
+    return parsedReading;
 }
 
 /**

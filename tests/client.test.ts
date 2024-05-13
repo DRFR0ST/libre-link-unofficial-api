@@ -30,8 +30,8 @@ describe('LibreLinkClient', () => {
     const data = await client.read();
 
     expect(data).toBeTruthy();
-    expect(data.value).to.be.a("number");
-    expect(data.timestamp).to.be.a(Date);
+    expect(typeof data.value).toBe("number");
+    expect(data.timestamp instanceof Date).toBe(true);
     expect(mapObjectPropertiesToTypes(data!)).toMatchSnapshot();
   });
 
