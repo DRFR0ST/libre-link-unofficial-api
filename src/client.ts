@@ -1,6 +1,6 @@
 import { config } from "./config";
-import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection } from "./types";
-import { parseUser } from "./utils";
+import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse } from "./types";
+import { parseGlucoseReading, parseUser } from "./utils";
 
 /**
  * A class for interacting with the Libre Link Up API.
@@ -89,16 +89,18 @@ export class LibreLinkClient {
 
   /**
    * @description Read the data from the Libre Link Up API.
-   * @returns The data from the Libre Link Up API.
-   * 
-   * TODO: Extend this method to read the data from the Libre Link Up API and return in a more readable format.
+   * @returns The latest glucose measurement from the Libre Link Up API.
    */
   public async read() {
     try {
       const patientId = await this.getPatientId();
 
-      const response = await this._fetcher(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`);
-      return response;
+      const response = await this._fetcher<LibreConnectionResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`);
+
+      this.verbose("Fetched data from Libre Link Up API.", JSON.stringify(response, null, 2));
+
+      // Parse and return the latest glucose item from the response.
+      return parseGlucoseReading(response.data?.connection.glucoseItem, response.data.connection);
     } catch(err) {
       const error = err as Error;
 
@@ -118,10 +120,11 @@ export class LibreLinkClient {
       // Fetch the connections from the Libre Link Up API.
       const connections = await this._fetcher(LibreLinkUpEndpoints.Connections);
 
-      this.verbose("Fetched connections from Libre Link Up API.", JSON.stringify(connections, null, 2));
+      this.verbose(`Fetched ${connections?.data?.length} connections from Libre Link Up API.`, JSON.stringify(connections, null, 2));
 
-      // Cache the connections for future use.
-      this.setCache("connections", connections);
+      if(!connections?.data?.length)
+        // Cache the connections for future use.
+        this.setCache("connections", connections);
 
       return connections;
     } catch(err) {
@@ -238,7 +241,10 @@ export class LibreLinkClient {
 
       return data;
     } catch (err) {
-      throw new Error("Error fetching data from Libre Link Up API.");
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error fetching connections from Libre Link Up API. ${error.message}`);
     }
   }
 

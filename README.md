@@ -72,7 +72,7 @@ await client.login();
 
 ### Get current user
 ```js
-const user = await client.me;
+const user = client.me;
 ```
 
 Check out the [examples](https://github.com/DRFR0ST/libre-link-unofficial-api/blob/main/example/index.ts) directory for more examples.

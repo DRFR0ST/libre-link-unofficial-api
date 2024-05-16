@@ -64,7 +64,7 @@ export interface LibreConnectionResponse extends LibreResponse {
   data: {
     connection: LibreConnection;
     activeSensors: LibreActiveSensor[];
-    graphData: GlucoseItem[];
+    graphData: RawGlucoseReading[];
   };
   ticket: Ticket;
 }
@@ -113,8 +113,8 @@ export interface LibreConnection {
   uom: number;
   sensor: LibreSensor;
   alarmRules: LibreAlarmRules;
-  glucoseMeasurement: GlucoseItem;
-  glucoseItem: GlucoseItem;
+  glucoseMeasurement: RawGlucoseReading;
+  glucoseItem: RawGlucoseReading;
   glucoseAlarm: null;
   patientDevice: LibreDevice;
   created: number;
@@ -256,7 +256,7 @@ interface Nd {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Std {}
 
-export interface GlucoseItem {
+export interface RawGlucoseReading {
   FactoryTimestamp: string;
   Timestamp: string;
   type: number;
@@ -270,10 +270,25 @@ export interface GlucoseItem {
   isLow: boolean;
 }
 
+export interface GlucoseReading {
+  timestamp: Date;
+  value: number;
+  measurementColor: MeasurementColor;
+  isHigh: boolean;
+  isLow: boolean;
+}
+
 interface Ticket {
   token: string;
   expires: number;
   duration: number;
+}
+
+export enum MeasurementColor {
+  Red = 0,
+  Green = 1,
+  Yellow = 2,
+  Orange = 3,
 }
 
 /**

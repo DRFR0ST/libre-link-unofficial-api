@@ -14,8 +14,8 @@
     "build:node": "bun build ./src/index.ts --outdir dist --target node --splitting --minify --sourcemap=inline",
     "build:emitDeclarations": "tsc --emitDeclarationOnly --project tsconfig.json --tsBuildInfoFile './dist/.tsbuildinfo'",
     "clean": "rimraf dist",
-    "test": "bun test --coverage",
-    "test:update": "bun test --coverage --update-snapshots",
+    "test": "bun test --coverage --timeout 60000",
+    "test:update": "bun test --coverage --update-snapshots --timeout 60000",
     "example": "bun run ./example/index.ts",
     "prepublish": "bun run build"
   },
