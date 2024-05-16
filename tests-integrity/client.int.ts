@@ -2,15 +2,11 @@ import { expect, test, beforeEach, describe } from "bun:test";
 import { LibreLinkClient } from '../src';
 import { mapObjectPropertiesToTypes } from "./utils";
 
-describe('LibreLinkClient', () => {
+describe('Libre Link Up API Integrity', () => {
   const client: LibreLinkClient = new LibreLinkClient();
 
   // Wait for a couple of seconds between tests to avoid 429 too many requests errors.
   beforeEach(() => new Promise((resolve) => setTimeout(resolve, 5000)));
-
-  test('should be created', () => {
-    expect(client).toBeTruthy();
-  });
 
   test('should successfully login', async () => {
     await client.login();
@@ -34,24 +30,4 @@ describe('LibreLinkClient', () => {
     expect(data.timestamp instanceof Date).toBe(true);
     expect(mapObjectPropertiesToTypes(data!)).toMatchSnapshot();
   });
-
-  // TODO: Fix the test.
-  // test('should initialize with a patientId', async () => {
-  //   const customClient = new LibreLinkClient({ patientId: "7f51ab27-c7c8-11ed-bcc3-0242ac110002" });
-
-  //   await customClient.login();
-
-  //   expect(customClient.me).toBeTruthy();
-  // });
-
-  // test('should throw error with an invalid patientId', async () => {
-  //   const customClient = new LibreLinkClient({ patientId: "invalid-patient-id" });
-
-  //   try {
-  //     await customClient.login();
-  //   } catch(err) {
-  //     expect(err).toBeTruthy();
-  //     expect(err.message).toMatch(/(Patient ID not found in connections. (invalid-patient-id))/i);
-  //   }
-  // });
 });

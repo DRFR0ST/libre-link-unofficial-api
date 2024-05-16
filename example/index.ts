@@ -9,6 +9,12 @@ const login = async () => {
   return await client.login();
 };
 
+const fetchConnections = async () => {
+  console.log("\n\nFetched connections =>\n");
+
+  return await client.fetchConnections();
+}
+
 const read = async () => {
   console.log("\n\nRead the data =>\n");
 
@@ -21,8 +27,9 @@ const main = async () => {
 
   await login();
 
-  console.log(client.me);
-  console.log(await read());
+  console.log(JSON.stringify(client.me, null, 2));
+  console.log(JSON.stringify(await fetchConnections(), null, 2));
+  console.log(JSON.stringify(await read(), null, 2));
 };
 
 main();

@@ -14,14 +14,17 @@
     "build:node": "bun build ./src/index.ts --outdir dist --target node --splitting --minify --sourcemap=inline",
     "build:emitDeclarations": "tsc --emitDeclarationOnly --project tsconfig.json --tsBuildInfoFile './dist/.tsbuildinfo'",
     "clean": "rimraf dist",
-    "test": "bun test --coverage --timeout 60000",
-    "test:update": "bun test --coverage --update-snapshots --timeout 60000",
+    "test": "bun run test-unit && bun run test-integrity",
+    "test-unit": "bun test 'spec' --coverage",
+    "test-integrity": "bun test 'int' --coverage --timeout 60000",
+    "test-integrity:update": "bun test 'int' --coverage --update-snapshots --timeout 60000",
     "example": "bun run ./example/index.ts",
     "prepublish": "bun run build"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "rimraf": "latest"
+    "rimraf": "latest",
+    "nock": "^13.5.4"
   },
   "peerDependencies": {
     "typescript": "latest"
