@@ -29,3 +29,29 @@ export const mapObjectPropertiesToTypes = (obj: Record<string, any>): TypeMap =>
 
     return typeMap;
 }
+
+
+/**
+ * @description Mock the fetch method.
+ * TODO: Extend to support url matching etc.
+ */
+export const mockFetch = async (data: any) => {
+    // @ts-ignore
+    globalThis.fetch = () => {
+        console.debug("Mocked fetch called:", data);
+        return Promise.resolve({
+          status: 200,
+          ok: true,
+          json: () => Promise.resolve({data}),
+        })
+      };
+}
+
+/**
+ * @description Clear the mock fetch.
+ * TODO: Look for a better solution.
+ */
+export const clearMockFetch = () => {
+    // @ts-ignore
+    globalThis.fetch = undefined;
+}
