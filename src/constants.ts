@@ -7,4 +7,13 @@ export const TREND_MAP: Trend[] = [
     Trend.Flat,
     Trend.FortyFiveUp,
     Trend.SingleUp,
-  ];
+];
+
+export const TREND_TYPE_MAP: string[] = [
+    "NotComputable",
+    "SingleDown",
+    "FortyFiveDown",
+    "Flat",
+    "FortyFiveUp",
+    "SingleUp",
+];

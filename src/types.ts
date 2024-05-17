@@ -313,6 +313,8 @@ export enum MeasurementColor {
   Orange = 3,
 }
 
+export type TrendType = "NotComputable" | "SingleDown" | "FortyFiveDown" | "Flat" | "FortyFiveUp" | "SingleUp";
+
 export enum Trend {
   'NotComputable' = 0,
   'SingleDown' = 1,

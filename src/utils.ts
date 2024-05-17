@@ -37,7 +37,7 @@ export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: L
         measurementColor: rawReading.MeasurementColor as MeasurementColor,
         isHigh,
         isLow,
-        trend: getTrend(rawReading.TrendArrow)
+        trend: parseTrend(rawReading.TrendArrow)
     });
 
     return parsedReading;
@@ -55,8 +55,17 @@ export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: L
 export const sortByTimestamp = (a: GlucoseReading, b: GlucoseReading) => a.timestamp.getTime() - b.timestamp.getTime();
 
 /**
- * @description Get the trend of a set of glucose readings.
+ * @description Parse the trend of glucose reading.
  * @param trend The current trend.
  * @param defaultTrend The default trend to use if trend is undefined.
+ * @returns The parsed trend.
  */
-const getTrend = (trend: number | undefined, defaultTrend: Trend = Trend.Flat) => TREND_MAP[trend!] ?? defaultTrend;
+export const parseTrend = (trend: number | undefined, defaultTrend: Trend = Trend.Flat) => trend as Trend ?? defaultTrend;
+
+/**
+ * @description Get the trend type of glucose reading.
+ * @param trend The current trend.
+ * @param defaultTrend The default trend to use if trend is undefined.
+ * @returns The trend type.
+ */
+export const getTrendType = (trend: number | undefined, defaultTrend: Trend = Trend.Flat) => Trend[parseTrend(trend, defaultTrend)];
