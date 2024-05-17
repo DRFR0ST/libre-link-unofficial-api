@@ -17,15 +17,7 @@ First, install the library using either
 npm install libre-link-unofficial-api
 ```
 
-### pnpm
-```sh
-pnpm add libre-link-unofficial-api
-```
-
-### yarn
-```sh
-yarn add libre-link-unofficial-api
-```
+or
 
 ### bun
 ```sh
