@@ -270,12 +270,34 @@ export interface RawGlucoseReading {
   isLow: boolean;
 }
 
+/**
+ * @description A parsed glucose reading from the Libre Link Up API.
+ */
 export interface GlucoseReading {
+  /**
+   * @description The timestamp of the glucose reading.
+   */
   timestamp: Date;
+  /**
+   * @description The value of the glucose reading in mg/dL.
+   */
   value: number;
+  /**
+   * @description The measurement color of the glucose reading. See {@link MeasurementColor}.
+   */
   measurementColor: MeasurementColor;
+  /**
+   * @description Whether the glucose reading is high, based on the patient's settings. Calculated by the library.
+   */
   isHigh: boolean;
+  /**
+   * @description Whether the glucose reading is low, based on the patient's settings. Calculated by the library.
+   */
   isLow: boolean;
+  /**
+   * @description The trend of the glucose reading. See {@link Trend}.
+   */
+  trend: Trend;
 }
 
 interface Ticket {
@@ -289,6 +311,15 @@ export enum MeasurementColor {
   Green = 1,
   Yellow = 2,
   Orange = 3,
+}
+
+export enum Trend {
+  'NotComputable' = 0,
+  'SingleDown' = 1,
+  'FortyFiveDown' = 2,
+  'Flat' = 3,
+  'FortyFiveUp' = 4,
+  'SingleUp' = 5,
 }
 
 /**
