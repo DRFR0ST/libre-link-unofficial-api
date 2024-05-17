@@ -93,11 +93,7 @@ export class LibreLinkClient {
    */
   public async read() {
     try {
-      const patientId = await this.getPatientId();
-
-      const response = await this._fetcher<LibreConnectionResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`);
-
-      this.verbose("Fetched data from Libre Link Up API.", JSON.stringify(response, null, 2));
+      const response = await this.fetchReading();
 
       // Parse and return the latest glucose item from the response.
       return parseGlucoseReading(response.data?.connection.glucoseItem, response.data.connection);
@@ -106,6 +102,27 @@ export class LibreLinkClient {
 
       console.error(error);
       throw new Error(`Error reading data from Libre Link Up API. ${error.message}`);
+    }
+  }
+
+  /**
+   * @description Fetch the reading from the Libre Link Up API. Use to obtain the raw reading and more.
+   * @returns The response from the Libre Link Up API.
+   */
+  public async fetchReading() {
+    try {
+      const patientId = await this.getPatientId();
+
+      const response = await this._fetcher<LibreConnectionResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`);
+
+      this.verbose("Fetched reading from Libre Link Up API.", JSON.stringify(response, null, 2));
+
+      return response;
+    } catch(err) {
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error fetching reading from Libre Link Up API. ${error.message}`);
     }
   }
 

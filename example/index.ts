@@ -15,6 +15,12 @@ const read = async () => {
   return await client.read();
 }
 
+const fetchReading = async () => {
+  console.log("\n\Fetch the reading =>\n");
+
+  return await client.fetchReading();
+}
+
 // This is an example of how to use the LibreLinkClient class.
 const main = async () => {
   console.clear();
@@ -23,6 +29,7 @@ const main = async () => {
 
   console.log(client.me);
   console.log(await read());
+  // console.log(JSON.stringify(await fetchReading(), null, 2));
 };
 
 main();
