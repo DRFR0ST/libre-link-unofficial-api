@@ -1,4 +1,5 @@
-import { RawGlucoseReading, LibreUser, GlucoseReading, MeasurementColor, LibreConnection } from "./types";
+import { TREND_MAP } from "./constants";
+import { RawGlucoseReading, LibreUser, GlucoseReading, MeasurementColor, LibreConnection, Trend } from "./types";
 
 /**
  * Parse a Libre User object.
@@ -36,6 +37,7 @@ export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: L
         measurementColor: rawReading.MeasurementColor as MeasurementColor,
         isHigh,
         isLow,
+        trend: getTrend(rawReading.TrendArrow)
     });
 
     return parsedReading;
@@ -51,3 +53,10 @@ export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: L
  * .sort(sortByTimestamp)
  */
 export const sortByTimestamp = (a: GlucoseReading, b: GlucoseReading) => a.timestamp.getTime() - b.timestamp.getTime();
+
+/**
+ * @description Get the trend of a set of glucose readings.
+ * @param trend The current trend.
+ * @param defaultTrend The default trend to use if trend is undefined.
+ */
+const getTrend = (trend: number | undefined, defaultTrend: Trend = Trend.Flat) => TREND_MAP[trend!] ?? defaultTrend;

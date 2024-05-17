@@ -188,6 +188,7 @@ exports[`LibreLinkClient should successfully read data 1`] = `
   "isLow": "boolean",
   "measurementColor": "number",
   "timestamp": {},
+  "trend": "number",
   "value": "number",
 }
 `;
