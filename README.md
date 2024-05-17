@@ -10,10 +10,26 @@ Welcome to the unofficial Node.js API for Libre Link Up! This library is designe
 
 ## 🚀 Getting Started
 
-First, install the library using npm:
+First, install the library using either
 
+### npm
 ```sh
 npm install libre-link-unofficial-api
+```
+
+### pnpm
+```sh
+pnpm add libre-link-unofficial-api
+```
+
+### yarn
+```sh
+yarn add libre-link-unofficial-api
+```
+
+### bun
+```sh
+bun install libre-link-unofficial-api
 ```
 
 Then, you can import the `LibreLinkClient` from the library:
@@ -49,8 +65,9 @@ Method | Description | Status
 --- | --- | ---
 `login` | Login to the Libre Link Up API. | ✅
 `me` | Get the current cached user. | ✅
-`read` | Get the raw reading. | ⏳
+`read` | Get the raw reading. | ✅
 `stream` | Stream the readings. | ⏳
+`fetchReading` | Fetch the raw reading from the Libre Link Up API. Use read for parsed readings. | ✅
 `fetchConnections` | Fetch the connections between LinkUp account and Libre app. | ✅
 
 More methods will be added in the future. If you need a specific method, please open an issue or submit a pull request!
@@ -75,12 +92,21 @@ await client.login();
 const user = client.me;
 ```
 
+### Get a blood glucose reading
+```js
+const reading = await client.read();
+
+console.log(reading.value);
+```
+
 Check out the [examples](https://github.com/DRFR0ST/libre-link-unofficial-api/blob/main/example/index.ts) directory for more examples.
 
 ## ⚠️ Disclaimer
 This library was reverse engineered from the Libre Link Up API and resources available online; and may be incomplete or inaccurate. The library is not associated with Abbott or Freestyle. Use at your own risk.
 
 Every 12 hours a Github Action runs to test the library against the Libre Link Up API. If the tests fail, the library may be out of date. Please open an issue or submit a pull request if you notice any issues. Thanks!
+
+[![🧪 Tests](https://github.com/DRFR0ST/libre-link-unofficial-api/actions/workflows/test.yml/badge.svg)](https://github.com/DRFR0ST/libre-link-unofficial-api/actions/workflows/test.yml)
 
 ## 🙏 Acknowledgements
 Big thanks to the author of the [libre-link-up-api-client](https://github.com/DiaKEM/libre-link-up-api-client) library for reverse engineering the Libre Link Up API — your work inspired this library! 🚀
