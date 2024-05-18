@@ -28,13 +28,15 @@ export const parseUnixTimestamp = (timestamp: number) => new Date(timestamp * 10
  * @returns The parsed glucose reading.
  */
 export const parseGlucoseReading = (rawReading: RawGlucoseReading, options: { targetHigh: number, targetLow: number }) => {
+    const value = rawReading.ValueInMgPerDl;
+
     // ! Calculates the isHigh and isLow properties based on the targetHigh and targetLow values. The two values coming from Libre Link Up seems to be incorrect.
-    const isHigh = options.targetHigh < rawReading.Value;
-    const isLow = options.targetLow > rawReading.Value;
+    const isHigh = options.targetHigh < value;
+    const isLow = options.targetLow > value;
    
     const parsedReading = Object.freeze({
         timestamp: new Date(rawReading.Timestamp),
-        value: rawReading.ValueInMgPerDl,
+        value,
         measurementColor: rawReading.MeasurementColor as MeasurementColor,
         isHigh,
         isLow,

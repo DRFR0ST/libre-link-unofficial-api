@@ -28,7 +28,13 @@ const main = async () => {
   await login();
 
   console.log(client.me);
-  console.log(await read());
+
+  const reading = await read();
+
+  console.log("Reading =>", reading);
+  console.log("Raw Reading =>", JSON.stringify(reading._raw, null, 2));
+  console.log("mg/dL", reading.mgDl);
+  console.log("mmol", reading.mmol)
   // console.log(JSON.stringify(await fetchReading(), null, 2));
 };
 
