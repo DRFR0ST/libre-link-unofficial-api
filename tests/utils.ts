@@ -17,6 +17,8 @@ export const mapObjectPropertiesToTypes = (obj: Record<string, any>): TypeMap =>
                 typeMap[key] = 'array'; // Indicate an array
             } else if (value === null) {
                 typeMap[key] = 'null'; // Handle null
+            } else if (JSON.stringify(value).trim() === "{}") {
+                typeMap[key] = 'object'; // Handle empty object
             } else {
                 // Recurse for nested objects
                 typeMap[key] = mapObjectPropertiesToTypes(value); 
