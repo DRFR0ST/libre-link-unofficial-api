@@ -9,7 +9,7 @@ describe('Utils', () => {
     test('should parse raw glucose reading', () => {
       const rawReading = {
         Timestamp: 1631452800,
-        Value: 100,
+        ValueInMgPerDl: 100,
         MeasurementColor: "Green",
         TrendArrow: Trend.Flat,
       } as unknown as RawGlucoseReading;
@@ -34,7 +34,7 @@ describe('Utils', () => {
     test('should parse raw low glucose reading', () => {
       const rawReading = {
         Timestamp: 1631452800,
-        Value: 43,
+        ValueInMgPerDl: 43,
         MeasurementColor: "Red",
         TrendArrow: Trend.FortyFiveDown,
       } as unknown as RawGlucoseReading;
@@ -57,7 +57,7 @@ describe('Utils', () => {
     test('should parse raw high glucose reading', () => {
       const rawReading = {
         Timestamp: 1631452800,
-        Value: 242,
+        ValueInMgPerDl: 242,
         MeasurementColor: "Yellow",
         TrendArrow: Trend.FortyFiveUp,
       } as unknown as RawGlucoseReading;

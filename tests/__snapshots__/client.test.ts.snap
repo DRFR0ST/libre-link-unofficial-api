@@ -15,7 +15,7 @@ exports[`LibreLinkClient should successfully login 1`] = `
   "created": {},
   "dateFormat": "string",
   "dateOfBirth": {},
-  "details": {},
+  "details": "object",
   "devices": {
     "a56c8d81-5eaa-11ee-9927-1639b8edd413": {
       "id": "string",
@@ -58,7 +58,7 @@ exports[`LibreLinkClient should successfully login 1`] = `
       "zip": "string",
     },
   },
-  "programs": {},
+  "programs": "object",
   "system": {
     "messages": {
       "appReviewBanner": "number",
@@ -115,7 +115,7 @@ exports[`LibreLinkClient should successfully fetch connections 1`] = `
       },
       "p": "number",
       "r": "number",
-      "std": {},
+      "std": "object",
     },
     "country": "string",
     "created": "number",
@@ -184,11 +184,16 @@ exports[`LibreLinkClient should successfully fetch connections 1`] = `
 
 exports[`LibreLinkClient should successfully read data 1`] = `
 {
+  "FactoryTimestamp": "string",
+  "GlucoseUnits": "number",
+  "MeasurementColor": "number",
+  "Timestamp": "string",
+  "TrendArrow": "number",
+  "TrendMessage": "null",
+  "Value": "number",
+  "ValueInMgPerDl": "number",
   "isHigh": "boolean",
   "isLow": "boolean",
-  "measurementColor": "number",
-  "timestamp": {},
-  "trend": "number",
-  "value": "number",
+  "type": "number",
 }
 `;

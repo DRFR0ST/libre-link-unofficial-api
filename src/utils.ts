@@ -1,5 +1,6 @@
 import { TREND_MAP } from "./constants";
-import { RawGlucoseReading, LibreUser, GlucoseReading, MeasurementColor, LibreConnection, Trend } from "./types";
+import { GlucoseReading } from "./reading";
+import { RawGlucoseReading, LibreUser, MeasurementColor, Trend } from "./types";
 
 /**
  * Parse a Libre User object.
@@ -26,14 +27,16 @@ export const parseUnixTimestamp = (timestamp: number) => new Date(timestamp * 10
  * @param connection The connection object to use for parsing. Used for calculating isHigh and isLow.
  * @returns The parsed glucose reading.
  */
-export const parseGlucoseReading = (rawReading: RawGlucoseReading, connection: LibreConnection): GlucoseReading => {
+export const parseGlucoseReading = (rawReading: RawGlucoseReading, options: { targetHigh: number, targetLow: number }) => {
+    const value = rawReading.ValueInMgPerDl;
+
     // ! Calculates the isHigh and isLow properties based on the targetHigh and targetLow values. The two values coming from Libre Link Up seems to be incorrect.
-    const isHigh = connection?.targetHigh < rawReading.Value;
-    const isLow = connection?.targetLow > rawReading.Value;
+    const isHigh = options.targetHigh < value;
+    const isLow = options.targetLow > value;
    
     const parsedReading = Object.freeze({
         timestamp: new Date(rawReading.Timestamp),
-        value: rawReading.Value,
+        value,
         measurementColor: rawReading.MeasurementColor as MeasurementColor,
         isHigh,
         isLow,

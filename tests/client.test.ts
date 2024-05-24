@@ -27,12 +27,12 @@ describe('LibreLinkClient', () => {
   });
 
   test('should successfully read data', async () => {
-    const data = await client.read();
+    const glucoseReading = await client.read();
 
-    expect(data).toBeTruthy();
-    expect(typeof data.value).toBe("number");
-    expect(data.timestamp instanceof Date).toBe(true);
-    expect(mapObjectPropertiesToTypes(data!)).toMatchSnapshot();
+    expect(glucoseReading).toBeTruthy();
+    expect(typeof glucoseReading.value).toBe("number");
+    expect(glucoseReading.timestamp instanceof Date).toBe(true);
+    expect(mapObjectPropertiesToTypes(glucoseReading._raw)).toMatchSnapshot();
   });
 
   // TODO: Fix the test.

@@ -28,8 +28,20 @@ const main = async () => {
   await login();
 
   console.log(client.me);
-  console.log(await read());
-  // console.log(JSON.stringify(await fetchReading(), null, 2));
+
+  // const reading = await read();
+
+  // console.log("Reading =>", reading);
+  // console.log("Raw Reading =>", JSON.stringify(reading._raw, null, 2));
+  // console.log("mg/dL", reading.mgDl);
+  // console.log("mmol", reading.mmol);
+  // console.log("timestamp", reading.timestamp);
+  // console.log("trend", reading.trend);
+  // console.log("isHigh", reading.isHigh);
+  // console.log("isLow", reading.isLow);
+  // console.log("trendType", reading.trendType);
+  // console.log("options", reading._options);
+  console.log(JSON.stringify(await fetchReading(), null, 2));
 };
 
 main();

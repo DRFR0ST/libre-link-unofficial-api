@@ -1,4 +1,4 @@
-import { Trend } from "./types";
+import { Trend, TrendType } from "./types";
 
 export const TREND_MAP: Trend[] = [
     Trend.NotComputable,
@@ -9,7 +9,7 @@ export const TREND_MAP: Trend[] = [
     Trend.SingleUp,
 ];
 
-export const TREND_TYPE_MAP: string[] = [
+export const TREND_TYPE_MAP: TrendType[] = [
     "NotComputable",
     "SingleDown",
     "FortyFiveDown",
