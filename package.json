@@ -14,10 +14,10 @@
     "build:node": "bun build ./src/index.ts --outdir dist --target node --splitting --minify --sourcemap=inline",
     "build:emitDeclarations": "tsc --emitDeclarationOnly --project tsconfig.json --tsBuildInfoFile './dist/.tsbuildinfo'",
     "clean": "rimraf dist",
-    "test": "bun run test-integrity && bun run test-unit",
+    "test": "bun run test-int && bun run test-unit",
     "test-unit": "bun test 'spec' --coverage",
-    "test-integrity": "bun test 'test' --coverage --timeout 60000",
-    "test-integrity:update": "bun test 'test' --coverage --update-snapshots --timeout 60000",
+    "test-int": "bun test 'client.test.ts' --coverage --timeout 60000",
+    "test-int:update": "bun test 'client.test.ts' --coverage --update-snapshots --timeout 60000",
     "example": "bun run ./example/index.ts",
     "prepublish": "bun run build"
   },
