@@ -291,6 +291,17 @@ export enum MeasurementColor {
   Orange = 3,
 }
 
+export type TrendType = "NotComputable" | "SingleDown" | "FortyFiveDown" | "Flat" | "FortyFiveUp" | "SingleUp";
+
+export enum Trend {
+  'NotComputable' = 0,
+  'SingleDown' = 1,
+  'FortyFiveDown' = 2,
+  'Flat' = 3,
+  'FortyFiveUp' = 4,
+  'SingleUp' = 5,
+}
+
 /**
  * Attribution for the types.
  * @description The types were borrowed from the DiaKEM libre-link-up-api-client project.
