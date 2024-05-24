@@ -9,6 +9,12 @@ const login = async () => {
   return await client.login();
 };
 
+const fetchConnections = async () => {
+  console.log("\n\nFetched connections =>\n");
+
+  return await client.fetchConnections();
+}
+
 const read = async () => {
   console.log("\n\nRead the data =>\n");
 

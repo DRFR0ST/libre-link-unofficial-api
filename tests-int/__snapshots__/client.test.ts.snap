@@ -1,6 +1,6 @@
 // Bun Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LibreLinkClient should successfully login 1`] = `
+exports[`Libre Link Up API Integrity should successfully login 1`] = `
 {
   "accountType": "string",
   "communicationLanguage": "string",
@@ -15,7 +15,7 @@ exports[`LibreLinkClient should successfully login 1`] = `
   "created": {},
   "dateFormat": "string",
   "dateOfBirth": {},
-  "details": "object",
+  "details": {},
   "devices": {
     "a56c8d81-5eaa-11ee-9927-1639b8edd413": {
       "id": "string",
@@ -58,7 +58,7 @@ exports[`LibreLinkClient should successfully login 1`] = `
       "zip": "string",
     },
   },
-  "programs": "object",
+  "programs": {},
   "system": {
     "messages": {
       "appReviewBanner": "number",
@@ -82,7 +82,7 @@ exports[`LibreLinkClient should successfully login 1`] = `
 }
 `;
 
-exports[`LibreLinkClient should successfully fetch connections 1`] = `
+exports[`Libre Link Up API Integrity should successfully fetch connections 1`] = `
 {
   "0": {
     "alarmRules": {
@@ -115,7 +115,7 @@ exports[`LibreLinkClient should successfully fetch connections 1`] = `
       },
       "p": "number",
       "r": "number",
-      "std": "object",
+      "std": {},
     },
     "country": "string",
     "created": "number",
@@ -182,7 +182,7 @@ exports[`LibreLinkClient should successfully fetch connections 1`] = `
 }
 `;
 
-exports[`LibreLinkClient should successfully read data 1`] = `
+exports[`Libre Link Up API Integrity should successfully read data 1`] = `
 {
   "FactoryTimestamp": "string",
   "GlucoseUnits": "number",

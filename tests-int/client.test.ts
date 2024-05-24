@@ -2,7 +2,7 @@ import { expect, test, beforeEach, describe } from "bun:test";
 import { LibreLinkClient } from '../src';
 import { mapObjectPropertiesToTypes } from "./utils";
 
-describe('LibreLinkClient', () => {
+describe('Libre Link Up API Integrity', () => {
   const client: LibreLinkClient = new LibreLinkClient();
 
   // Wait for a couple of seconds between tests to avoid 429 too many requests errors.

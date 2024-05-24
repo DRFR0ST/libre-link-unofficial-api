@@ -270,6 +270,14 @@ export interface RawGlucoseReading {
   isLow: boolean;
 }
 
+export interface GlucoseReading {
+  timestamp: Date;
+  value: number;
+  measurementColor: MeasurementColor;
+  isHigh: boolean;
+  isLow: boolean;
+}
+
 interface Ticket {
   token: string;
   expires: number;

@@ -1,4 +1,3 @@
-import { TREND_MAP } from "./constants";
 import { GlucoseReading } from "./reading";
 import { RawGlucoseReading, LibreUser, MeasurementColor, Trend } from "./types";
 

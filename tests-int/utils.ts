@@ -17,8 +17,6 @@ export const mapObjectPropertiesToTypes = (obj: Record<string, any>): TypeMap =>
                 typeMap[key] = 'array'; // Indicate an array
             } else if (value === null) {
                 typeMap[key] = 'null'; // Handle null
-            } else if (JSON.stringify(value).trim() === "{}") {
-                typeMap[key] = 'object'; // Handle empty object
             } else {
                 // Recurse for nested objects
                 typeMap[key] = mapObjectPropertiesToTypes(value); 
@@ -30,30 +28,4 @@ export const mapObjectPropertiesToTypes = (obj: Record<string, any>): TypeMap =>
     }
 
     return typeMap;
-}
-
-
-/**
- * @description Mock the fetch method.
- * TODO: Extend to support url matching etc.
- */
-export const mockFetch = async (data: any) => {
-    // @ts-ignore
-    globalThis.fetch = () => {
-        console.debug("Mocked fetch called:", data);
-        return Promise.resolve({
-          status: 200,
-          ok: true,
-          json: () => Promise.resolve({data}),
-        })
-      };
-}
-
-/**
- * @description Clear the mock fetch.
- * TODO: Look for a better solution.
- */
-export const clearMockFetch = () => {
-    // @ts-ignore
-    globalThis.fetch = window.fetch;
 }

@@ -1,10 +1,10 @@
-name: 🧪 Run Unit Tests
+name: 🧩 Run Integrity Tests 
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'  # Run every day at midnight to ensure the reverse engineered API is up to date.
 
 jobs:
   test:
@@ -24,8 +24,13 @@ jobs:
         LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
         LIBRE_LINK_UP_VERSION: ${{ secrets.LIBRE_LINK_UP_VERSION }}
 
-    - name: Run unit tests
-      run: bun run test
+    - name: Run integrity tests # Tests the library against production libre link up API.
+      uses: nick-fields/retry@v2
+      with:
+        timeout_minutes: 5
+        max_attempts: 3
+        retry_wait_seconds: 120
+        command: bun run test-api
       env:
         LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
         LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
