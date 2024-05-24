@@ -47,7 +47,14 @@ const main = async () => {
   // console.log("isLow", reading.isLow);
   // console.log("trendType", reading.trendType);
   // console.log("options", reading._options);
-  console.log(JSON.stringify(await fetchReading(), null, 2));
+  // console.log(JSON.stringify(await fetchReading(), null, 2));
+
+  // Stream the readings.
+  for await (const reading of client.stream()) {
+    const { value, timestamp, trendType } = reading;
+    console.log(value, " - ", timestamp.toTimeString());
+    console.log(`Trend ${trendType}`);
+  }
 };
 
 main();

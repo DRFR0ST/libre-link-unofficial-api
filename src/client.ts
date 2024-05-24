@@ -282,6 +282,25 @@ export class LibreLinkClient {
   }
 
   /**
+   * @description Stream the readings from the Libre Link Up API.
+   * @param intervalMs The interval between each reading. Default is 90 seconds.
+   */
+  public async *stream(intervalMs = 1000 * 90) {
+    while (true) { // Keep streaming until manually stopped
+      try {
+        const reading = await this.read();
+        yield reading;
+        await new Promise(resolve => setTimeout(resolve, intervalMs));
+      } catch (error) {
+        // Handle errors appropriately (yield error, log, rethrow, etc.)
+        console.error("Error fetching reading:", error); 
+        // Example: Rethrow the error to stop the stream
+        throw error;
+      }
+    }
+  }
+
+  /**
    * @description A verbose logger.
    * @param args
    */

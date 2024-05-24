@@ -58,7 +58,7 @@ Method | Description | Status
 `login` | Login to the Libre Link Up API. | ✅
 `me` | Get the current cached user. | ✅
 `read` | Get the raw reading. | ✅
-`stream` | Stream the readings. | ⏳
+`stream` | Stream the readings. | ✅
 `fetchReading` | Fetch the raw reading from the Libre Link Up API. Use read for parsed readings. | ✅
 `fetchConnections` | Fetch the connections between LinkUp account and Libre app. | ✅
 
@@ -89,6 +89,17 @@ const user = client.me;
 const reading = await client.read();
 
 console.log(reading.value);
+```
+
+### Stream the blood glucose readings. (Every 1.5min by default)
+```js
+// Stream the readings every 60 sec.
+for await (const reading of client.stream(1000 * 60)) {
+    const { value, timestamp, trendType } = reading;
+
+    console.log(value, " - ", timestamp.toTimeString());
+    console.log(`Trend ${trendType}`);
+}
 ```
 
 Check out the [examples](https://github.com/DRFR0ST/libre-link-unofficial-api/blob/main/example/index.ts) directory for more examples.
