@@ -55,5 +55,5 @@ export const mockFetch = async (data: any) => {
  */
 export const clearMockFetch = () => {
     // @ts-ignore
-    globalThis.fetch = undefined;
+    globalThis.fetch = window.fetch;
 }

@@ -7,7 +7,7 @@ describe('Utils', () => {
   test('should parse raw glucose reading', () => {
     const rawReading = {
       Timestamp: 1631452800,
-      Value: 100,
+      ValueInMgPerDl: 100,
       MeasurementColor: "Green",
     } as unknown as RawGlucoseReading;
 
@@ -30,7 +30,7 @@ describe('Utils', () => {
   test('should parse raw low glucose reading', () => {
     const rawReading = {
       Timestamp: 1631452800,
-      Value: 43,
+      ValueInMgPerDl: 43,
       MeasurementColor: "Red",
     } as unknown as RawGlucoseReading;
 
@@ -51,7 +51,7 @@ describe('Utils', () => {
   test('should parse raw high glucose reading', () => {
     const rawReading = {
       Timestamp: 1631452800,
-      Value: 242,
+      ValueInMgPerDl: 242,
       MeasurementColor: "Yellow",
     } as unknown as RawGlucoseReading;
 
