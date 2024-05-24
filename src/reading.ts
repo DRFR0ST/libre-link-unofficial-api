@@ -51,7 +51,7 @@ export class GlucoseReading {
      * @description The mmol value of the glucose reading.
      */
     get mmol() {
-        return (this.value / 18).toFixed(2);
+        return (this.value / 18).toFixed(1);
     }
 
     /**

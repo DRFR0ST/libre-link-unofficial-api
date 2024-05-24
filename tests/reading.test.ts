@@ -23,7 +23,7 @@ describe("GlucoseReading", () => {
       expect(glucoseReading.timestamp).toBeInstanceOf(Date);
       expect(glucoseReading.value).toBe(100);
       expect(glucoseReading.mgDl).toBe(100);
-      expect(glucoseReading.mmol).toBe("5.56");
+      expect(glucoseReading.mmol).toBe("5.5");
       expect(glucoseReading.trendType).toBe("Flat");
       expect(glucoseReading.measurementColor).toBe(MeasurementColor.Green);
       expect(glucoseReading.trend).toBe(Trend.Flat);
