@@ -59,6 +59,7 @@ Method | Description | Status
 `me` | Get the current cached user. | ✅
 `read` | Get the raw reading. | ✅
 `stream` | Stream the readings. | ✅
+`history` | Get the history of readings. | ✅
 `fetchReading` | Fetch the raw reading from the Libre Link Up API. Use read for parsed readings. | ✅
 `fetchConnections` | Fetch the connections between LinkUp account and Libre app. | ✅
 
@@ -93,16 +94,21 @@ console.log(reading.value);
 
 ### Stream the blood glucose readings. (Every 1.5min by default)
 ```js
-// Stream the readings every 60 sec.
-for await (const reading of client.stream(1000 * 60)) {
+// Stream the readings every 1.5min (can be changed via arguments)
+const stream = client.stream();
+
+for await (const reading of stream) {
     const { value, timestamp, trendType } = reading;
 
     console.log(value, " - ", timestamp.toTimeString());
     console.log(`Trend ${trendType}`);
+
+    // Use break; to stop the stream.
+    // if(value > 150) break;
 }
 ```
 
-Check out the [examples](https://github.com/DRFR0ST/libre-link-unofficial-api/blob/main/example/index.ts) directory for more examples.
+Check out the [Sandbox](https://github.com/DRFR0ST/libre-link-unofficial-api/blob/main/sandbox/index.ts) directory for more samples.
 
 ## ⚠️ Disclaimer
 This library was reverse engineered from the Libre Link Up API and resources available online; and may be incomplete or inaccurate. The library is not associated with Abbott or Freestyle. Use at your own risk.

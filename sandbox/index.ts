@@ -27,17 +27,33 @@ const fetchReading = async () => {
   return await client.fetchReading();
 }
 
+const history = async () => {
+  console.log("\n\Fetch the history =>\n");
+
+  return await client.history();
+}
+
 // This is an example of how to use the LibreLinkClient class.
 const main = async () => {
   console.clear();
 
+  /** =============================
+            Login example 
+  =================================*/
   await login();
 
   console.log(client.me);
 
+  /** =============================
+      Fetch connections example 
+  =================================*/
+
   // console.log(JSON.stringify(await fetchConnections(), null, 2));
 
-  const reading = await read();
+  /** =============================
+        Fetch reading example 
+  =================================*/
+  // const reading = await read();
 
   // console.log("Reading =>", reading);
   // console.log("Raw Reading =>", JSON.stringify(reading._raw, null, 2));
@@ -49,7 +65,17 @@ const main = async () => {
   // console.log("isLow", reading.isLow);
   // console.log("trendType", reading.trendType);
   // console.log("options", reading._options);
-  // console.log(JSON.stringify(await fetchReading(), null, 2));
+
+  /** =============================
+    Fetch readings history example 
+  =================================*/
+  // const readings = await history();
+
+  // console.log(JSON.stringify(readings, null, 2));
+
+  /** =============================
+      Stream readings example 
+  =================================*/
 
   // Stream the readings every 1.5 min
   // for await (const reading of client.stream()) {
