@@ -76,5 +76,109 @@ export const LibreLinkLoginMock = {
 };
 
 export const LibreLinkConnectionsMock = {
-
+    "status": 4,
+    "data": [
+        {
+            "id": "95f2e7a1-8180-442c-a3a4-981989898989",
+            "patientId": "1a1a1a1a-1a1a-1a1a-1a1a-1a1a1a1a1a1a",
+            "country": "XX",
+            "status": 1,
+            "firstName": "John",
+            "lastName": "Doe",
+            "targetLow": 60,
+            "targetHigh": 120,
+            "uom": 2,
+            "sensor": {
+                "deviceId": "",
+                "sn": "XX01XXRXXX",
+                "a": 1234567890,
+                "w": 45,
+                "pt": 2,
+                "s": false,
+                "lj": true
+            },
+            "alarmRules": {
+                "c": false,
+                "h": {
+                    "th": 180,
+                    "thmm": 10,
+                    "d": 1000,
+                    "f": 0.2
+                },
+                "f": {
+                    "th": 65,
+                    "thmm": 3.6,
+                    "d": 45,
+                    "tl": 15,
+                    "tlmm": 0.8
+                },
+                "l": {
+                    "on": false,
+                    "th": 80,
+                    "thmm": 4.4,
+                    "d": 1200,
+                    "tl": 12,
+                    "tlmm": 0.7
+                },
+                "nd": {
+                    "i": 25,
+                    "r": 8,
+                    "l": 4
+                },
+                "p": 3,
+                "r": 7,
+                "std": {}
+            },
+            "glucoseMeasurement": {
+                "FactoryTimestamp": "1/1/2024 1:00:00 AM",
+                "Timestamp": "1/2/2024 1:00:00 AM",
+                "type": 2,
+                "ValueInMgPerDl": 95,
+                "TrendArrow": 2,
+                "TrendMessage": "Stable",
+                "MeasurementColor": 2,
+                "GlucoseUnits": 2,
+                "Value": 4.75,
+                "isHigh": false,
+                "isLow": false
+            },
+            "glucoseItem": {
+                "FactoryTimestamp": "1/1/2024 1:00:00 AM",
+                "Timestamp": "1/2/2024 1:00:00 AM",
+                "type": 2,
+                "ValueInMgPerDl": 95,
+                "TrendArrow": 2,
+                "TrendMessage": "Stable",
+                "MeasurementColor": 2,
+                "GlucoseUnits": 2,
+                "Value": 4.75,
+                "isHigh": false,
+                "isLow": false
+            },
+            "glucoseAlarm": null,
+            "patientDevice": {
+                "did": "00000000-0000-0000-0000-000000000000",
+                "dtid": 12345,
+                "v": "1.0.0.0",
+                "l": false,
+                "ll": 80,
+                "hl": 180,
+                "u": 9876543210,
+                "fixedLowAlarmValues": {
+                    "mgdl": 70,
+                    "mmoll": 3.9
+                },
+                "alarms": false,
+                "fixedLowThreshold": 1
+            },
+            "created": 1672531200
+        }
+    ],
+    "ticket": {
+        "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "expires": 1987654321,
+        "duration": 86400000
+    }
 };
+
+export const LibreLinkReadMock = { connection: LibreLinkConnectionsMock.data[0] }

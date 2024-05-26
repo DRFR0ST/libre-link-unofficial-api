@@ -18,13 +18,12 @@
     "test-unit": "bun test 'spec' --coverage",
     "test-int": "bun test 'client.test.ts' --coverage --timeout 60000",
     "test-int:update": "bun test 'client.test.ts' --coverage --update-snapshots --timeout 60000",
-    "example": "bun run ./example/index.ts",
+    "sandbox": "bun run ./sandbox/index.ts",
     "prepublish": "bun run build"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "rimraf": "latest",
-    "nock": "^13.5.4"
+    "rimraf": "latest"
   },
   "peerDependencies": {
     "typescript": "latest"
