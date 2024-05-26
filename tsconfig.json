@@ -22,5 +22,5 @@
     ]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "tests", "example"]
+  "exclude": ["node_modules", "dist", "tests", "sandbox"]
 }

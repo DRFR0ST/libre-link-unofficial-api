@@ -106,6 +106,9 @@ export class LibreLinkClient {
     }
   }
 
+  /**
+   * @description Read the history data from the Libre Link Up API.
+   */
   public async history() {
     try {
       const response = await this.fetchReading();
@@ -118,6 +121,23 @@ export class LibreLinkClient {
 
       console.error(error);
       throw new Error(`Error reading data from Libre Link Up API. ${error.message}`);
+    }
+  }
+
+  /**
+     * @description Stream the readings from the Libre Link Up API.
+     * @param intervalMs The interval between each reading. Default is 90 seconds.
+     */
+  public async *stream(intervalMs = 1000 * 90) {
+    while (true) { // Keep streaming until manually stopped
+      try {
+        const reading = await this.read();
+        yield reading;
+        await new Promise(resolve => setTimeout(resolve, intervalMs));
+      } catch (error) {
+        console.error("Error fetching reading:", error); 
+        throw error;
+      }
     }
   }
 
@@ -155,7 +175,7 @@ export class LibreLinkClient {
 
       this.verbose(`Fetched ${connections?.data?.length} connections from Libre Link Up API.`, JSON.stringify(connections, null, 2));
 
-      if(!connections?.data?.length)
+      if(!!connections?.data?.length)
         // Cache the connections for future use.
         this.setCache("connections", connections);
 
@@ -278,25 +298,6 @@ export class LibreLinkClient {
 
       console.error(error);
       throw new Error(`Error fetching connections from Libre Link Up API. ${error.message}`);
-    }
-  }
-
-  /**
-   * @description Stream the readings from the Libre Link Up API.
-   * @param intervalMs The interval between each reading. Default is 90 seconds.
-   */
-  public async *stream(intervalMs = 1000 * 90) {
-    while (true) { // Keep streaming until manually stopped
-      try {
-        const reading = await this.read();
-        yield reading;
-        await new Promise(resolve => setTimeout(resolve, intervalMs));
-      } catch (error) {
-        // Handle errors appropriately (yield error, log, rethrow, etc.)
-        console.error("Error fetching reading:", error); 
-        // Example: Rethrow the error to stop the stream
-        throw error;
-      }
     }
   }
 

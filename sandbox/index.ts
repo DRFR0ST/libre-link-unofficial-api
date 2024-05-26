@@ -35,7 +35,9 @@ const main = async () => {
 
   console.log(client.me);
 
-  // const reading = await read();
+  // console.log(JSON.stringify(await fetchConnections(), null, 2));
+
+  const reading = await read();
 
   // console.log("Reading =>", reading);
   // console.log("Raw Reading =>", JSON.stringify(reading._raw, null, 2));
@@ -49,12 +51,12 @@ const main = async () => {
   // console.log("options", reading._options);
   // console.log(JSON.stringify(await fetchReading(), null, 2));
 
-  // Stream the readings.
-  for await (const reading of client.stream()) {
-    const { value, timestamp, trendType } = reading;
-    console.log(value, " - ", timestamp.toTimeString());
-    console.log(`Trend ${trendType}`);
-  }
+  // Stream the readings every 1.5 min
+  // for await (const reading of client.stream()) {
+  //   const { value, timestamp, trendType } = reading;
+  //   console.log(value, " - ", timestamp.toTimeString());
+  //   console.log(`Trend ${trendType}`);
+  // }
 };
 
 main();
