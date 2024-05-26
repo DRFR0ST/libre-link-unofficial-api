@@ -1,23 +1,23 @@
 import { expect, test, afterEach, describe } from "bun:test";
 import { GlucoseReading, LibreLinkClient } from '../src';
 import { LibreLinkConnectionsMock, LibreLinkLoginMock, LibreLinkReadMock } from './mocks';
-import {  clearMockFetch, mockFetch } from "./utils";
+import { mock, clearMocks } from 'bun-bagel';
 
 describe('LibreLinkClient', () => {
   const client: LibreLinkClient = new LibreLinkClient();
 
   afterEach(() => {
     // Clear pending mocks after each test
-    clearMockFetch();
+    clearMocks();
   });
-  
+
   test('should be created', () => {
     expect(client).toBeTruthy();
   });
 
   test('should successfully login', async () => {
     // Mock the fetch method
-    mockFetch('llu/auth/login', LibreLinkLoginMock);
+    mock('llu/auth/login', { data: { data: LibreLinkLoginMock } });
 
     await client.login();
 
@@ -26,7 +26,7 @@ describe('LibreLinkClient', () => {
 
   test('should successfully fetch connections', async () => {
     // Mock the fetch method
-    mockFetch('llu/connections', LibreLinkConnectionsMock.data);
+    mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
 
     const { data } = await client.fetchConnections();
 
@@ -35,9 +35,9 @@ describe('LibreLinkClient', () => {
 
   test('should successfully read data', async () => {
     // Mock the fetch method
-    mockFetch('llu/connections', LibreLinkConnectionsMock.data);
-    mockFetch(`llu/connections/*/graph`, LibreLinkReadMock);
-    
+    mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
+    mock(`llu/connections/*/graph`, { data: { data: LibreLinkReadMock } });
+
     const data = await client.read();
 
     expect(data).toBeTruthy();
@@ -48,8 +48,8 @@ describe('LibreLinkClient', () => {
 
   test('should successfully stream data', async () => {
     // Mock the fetch method
-    mockFetch('llu/connections', LibreLinkConnectionsMock.data);
-    mockFetch(`llu/connections/*/graph`, LibreLinkReadMock);
+    mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
+    mock(`llu/connections/*/graph`, { data: { data: LibreLinkReadMock } });
 
     const stream = client.stream(1000);
 

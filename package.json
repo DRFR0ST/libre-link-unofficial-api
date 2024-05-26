@@ -23,7 +23,8 @@
   },
   "devDependencies": {
     "bun-types": "latest",
-    "rimraf": "latest"
+    "rimraf": "latest",
+    "bun-bagel": "1.0.3"
   },
   "peerDependencies": {
     "typescript": "latest"
