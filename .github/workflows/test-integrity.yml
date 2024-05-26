@@ -30,7 +30,7 @@ jobs:
         timeout_minutes: 5
         max_attempts: 3
         retry_wait_seconds: 120
-        command: bun run test-api
+        command: bun run test-int
       env:
         LIBRE_LINK_EMAIL: ${{ secrets.LIBRE_LINK_EMAIL }}
         LIBRE_LINK_PASSWORD: ${{ secrets.LIBRE_LINK_PASSWORD }}
