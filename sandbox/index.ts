@@ -1,4 +1,5 @@
 import { LibreLinkClient } from "../src";
+import { mock, clearMocks } from "bun-bagel";
 
 // Create a new LibreLinkClient instance.
 const client = new LibreLinkClient();
@@ -40,9 +41,9 @@ const main = async () => {
   /** =============================
             Login example 
   =================================*/
-  await login();
+  // await login();
 
-  console.log(client.me);
+  // console.log(client.me);
 
   /** =============================
       Fetch connections example 
@@ -83,6 +84,16 @@ const main = async () => {
   //   console.log(value, " - ", timestamp.toTimeString());
   //   console.log(`Trend ${trendType}`);
   // }
+
+
+  // Register the mock for the example URL.
+  mock("https://example.com/api/users/*", { data: { name: "Foo" } });
+
+  // Make a fetch request to the mocked URL
+  const response = await fetch("https://example.com/api/users/123", { method: "POST" });
+
+  // Print the response body
+  console.log(await response.json());
 };
 
 main();

@@ -297,7 +297,7 @@ export class LibreLinkClient {
       const error = err as Error;
 
       console.error(error);
-      throw new Error(`Error fetching connections from Libre Link Up API. ${error.message}`);
+      throw new Error(`Error processing request to Libre Link Up API. ${error.message}`);
     }
   }
 

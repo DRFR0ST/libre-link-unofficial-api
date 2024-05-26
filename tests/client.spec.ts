@@ -17,8 +17,8 @@ describe('LibreLinkClient', () => {
 
   test('should successfully login', async () => {
     // Mock the fetch method
-    mock('llu/auth/login', { data: { data: LibreLinkLoginMock } });
-
+    mock('llu/auth/login', { data: { data: LibreLinkLoginMock }, method: "POST" });
+    
     await client.login();
 
     expect(client.me).toBeTruthy();
