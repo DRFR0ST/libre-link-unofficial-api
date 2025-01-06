@@ -276,11 +276,14 @@ export class LibreLinkClient {
       );
 
       if (!response.ok) {
+        const errorPayload = await response.json(); 
+        const errorMessage = errorPayload?.message ?? JSON.stringify(errorPayload, null, 2)
+        
         if(response.status === 429)
-          throw new Error("Too many requests. Please wait before trying again.");
+          throw new Error(`Too many requests. Please wait before trying again. ${errorMessage}`);
 
         throw new Error(
-          `Error fetching data from Libre Link Up API. Status: ${response.status}`
+          `Error fetching data from Libre Link Up API with status ${response.status}. ${errorMessage}`
         );
       }
 
