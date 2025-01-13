@@ -17,6 +17,20 @@ exports[`Libre Link Up API Integrity should successfully login 1`] = `
   "dateOfBirth": {},
   "details": {},
   "devices": {
+    "5064beb4-c84a-11ef-9336-8ad60696b8ae": {
+      "id": "string",
+      "nickname": "string",
+      "sn": "string",
+      "type": "number",
+      "uploadDate": "number",
+    },
+    "888b8ca9-b8af-11ef-b5f1-fa0211b939ab": {
+      "id": "string",
+      "nickname": "string",
+      "sn": "string",
+      "type": "number",
+      "uploadDate": "number",
+    },
     "a56c8d81-5eaa-11ee-9927-1639b8edd413": {
       "id": "string",
       "nickname": "string",
@@ -32,6 +46,20 @@ exports[`Libre Link Up API Integrity should successfully login 1`] = `
       "uploadDate": "number",
     },
     "c08364d5-f1ab-11ee-aaa5-5e24e2f78b68": {
+      "id": "string",
+      "nickname": "string",
+      "sn": "string",
+      "type": "number",
+      "uploadDate": "number",
+    },
+    "ee162534-c846-11ef-b8be-769559953539": {
+      "id": "string",
+      "nickname": "string",
+      "sn": "string",
+      "type": "number",
+      "uploadDate": "number",
+    },
+    "f534bb76-be0a-11ef-b7b9-beb444a54e4f": {
       "id": "string",
       "nickname": "string",
       "sn": "string",

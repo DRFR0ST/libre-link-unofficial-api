@@ -71,3 +71,17 @@ export const parseTrend = (trend: number | undefined, defaultTrend: Trend = Tren
  * @returns The trend type.
  */
 export const getTrendType = (trend: number | undefined, defaultTrend: Trend = Trend.Flat) => Trend[parseTrend(trend, defaultTrend)];
+
+/**
+ * @description Encrypt message in sha256.
+ * @param message The message to be encrypted.
+ * @returns The encrypted message.
+ */
+export const encryptSha256 = (message: string) => {
+  const buffer = new TextEncoder().encode(message);
+
+  return crypto.subtle.digest('SHA-256', buffer).then(hashBuffer => {
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  });
+}

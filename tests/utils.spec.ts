@@ -1,6 +1,6 @@
 import { expect, test, describe } from "bun:test";
-import { parseGlucoseReading } from "../src/utils";
-import { LibreConnection, MeasurementColor, RawGlucoseReading } from "../src/types";
+import { encryptSha256, parseGlucoseReading } from "../src/utils";
+import { LibreConnection, RawGlucoseReading } from "../src/types";
 
 describe('Utils', () => {
 
@@ -67,5 +67,14 @@ describe('Utils', () => {
     expect(glucoseReading.measurementColor).toBe("Yellow");
     expect(glucoseReading.timestamp instanceof Date).toBe(true);
     expect(glucoseReading.value).toBe(242);
+  });
+
+  test('should encrypt message in sha256', () => {
+    const message = "test";
+    const encryptedMessage = encryptSha256(message);
+
+    expect(encryptedMessage).resolves.toBeDefined();
+    expect(encryptedMessage).resolves.toHaveLength(64);
+    expect(encryptedMessage).resolves.toMatch(/^[a-f0-9]+$/);
   });
 });
