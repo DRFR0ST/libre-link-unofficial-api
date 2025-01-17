@@ -1,7 +1,7 @@
 import { config } from "./config";
 import { GlucoseReading } from "./reading";
 import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse } from "./types";
-import { parseUser } from "./utils";
+import { encryptSha256, parseUser } from "./utils";
 
 /**
  * A class for interacting with the Libre Link Up API.
@@ -28,9 +28,11 @@ export class LibreLinkClient {
   /**
    * @description Get the user data. Only available after logging in.
    */
-  public get me(): LibreUser {
-    if(!this.cache.has("user"))
-      throw new Error("User data is not available. Please log in first.");
+  public get me(): LibreUser | null {
+    if(!this.cache.has("user")) {
+      console.warn("User data is not available. Please log in first.");
+      return null;
+    }
 
     return this.cache.get("user");
   }
@@ -149,7 +151,11 @@ export class LibreLinkClient {
     try {
       const patientId = await this.getPatientId();
 
-      const response = await this._fetcher<LibreConnectionResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`);
+      const headers = {
+        "Account-Id": this.me?.id ? await encryptSha256(this.me.id) : "",
+      };
+
+      const response = await this._fetcher<LibreConnectionResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`, { headers });
 
       this.verbose("Fetched reading from Libre Link Up API.", JSON.stringify(response, null, 2));
 
@@ -170,8 +176,12 @@ export class LibreLinkClient {
       if(this.cache.has("connections"))
         return this.cache.get("connections");
 
+      const headers = {
+        "Account-Id": this.me?.id ? await encryptSha256(this.me.id) : "",
+      };
+
       // Fetch the connections from the Libre Link Up API.
-      const connections = await this._fetcher(LibreLinkUpEndpoints.Connections);
+      const connections = await this._fetcher(LibreLinkUpEndpoints.Connections, { headers });
 
       this.verbose(`Fetched ${connections?.data?.length} connections from Libre Link Up API.`, JSON.stringify(connections, null, 2));
 
