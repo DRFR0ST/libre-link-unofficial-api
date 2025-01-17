@@ -36,7 +36,7 @@ describe('Libre Link Up API Integrity', () => {
   });
 
   test('should successfully read logbook', async () => {
-    const glucoseReadings = await client.history();
+    const glucoseReadings = await client.logbook();
 
     expect(glucoseReadings).toBeTruthy();
     expect(typeof glucoseReadings[0].value).toBe("number");

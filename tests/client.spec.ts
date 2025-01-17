@@ -43,12 +43,12 @@ describe('LibreLinkClient', () => {
     expect(data).toBeTruthy();
   });
 
-  test('should return the history', async () => {
+  test('should return the logbook', async () => {
     // Mock the fetch method
     mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
     mock('llu/connections/*/logbook', { data: { data: [LibreLinkReadMock.connection.glucoseMeasurement] } })
 
-    const data = await client.history();
+    const data = await client.logbook();
 
     expect(data).toBeTruthy();
     expect(data[0]).toBeInstanceOf(GlucoseReading);
