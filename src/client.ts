@@ -113,6 +113,24 @@ export class LibreLinkClient {
    */
   public async history() {
     try {
+      const response = await this.fetchReading();
+
+      const list = response.data.graphData.map((item) => new GlucoseReading(item, response.data.connection));
+
+      return list;
+    } catch(err) {
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error reading data from Libre Link Up API. ${error.message}`);
+    }
+  }
+
+  /**
+   * @description Read the logbook data from manual scans from the Libre Link Up API.
+   */
+  public async logbook() {
+    try {
       const response = await this.fetchLogbook();
 
       const list = response.data.map((item) => new GlucoseReading(item));
