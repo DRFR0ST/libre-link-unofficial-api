@@ -43,8 +43,17 @@ describe('LibreLinkClient', () => {
     expect(data).toBeTruthy();
   });
 
-  // TODO: Implement unit tests for client.history method.
-  test.todo('should return the history');
+  test('should return the history', async () => {
+    // Mock the fetch method
+    mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
+    mock('llu/connections/*/logbook', { data: { data: [LibreLinkReadMock.connection.glucoseMeasurement] } })
+
+    const data = await client.history();
+
+    expect(data).toBeTruthy();
+    expect(data[0]).toBeInstanceOf(GlucoseReading);
+    expect(data.length).toBe(1);
+  });
 
   test('should successfully stream data', async () => {
     // Mock the fetch method

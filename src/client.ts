@@ -1,6 +1,6 @@
 import { config } from "./config";
 import { GlucoseReading } from "./reading";
-import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse } from "./types";
+import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse, LibreLogbookResponse } from "./types";
 import { encryptSha256, parseUser } from "./utils";
 
 /**
@@ -113,9 +113,9 @@ export class LibreLinkClient {
    */
   public async history() {
     try {
-      const response = await this.fetchReading();
+      const response = await this.fetchLogbook();
 
-      const list = response.data.graphData.map((item) => new GlucoseReading(item, response.data.connection));
+      const list = response.data.map((item) => new GlucoseReading(item));
 
       return list;
     } catch(err) {
@@ -158,6 +158,31 @@ export class LibreLinkClient {
       const response = await this._fetcher<LibreConnectionResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/graph`, { headers });
 
       this.verbose("Fetched reading from Libre Link Up API.", JSON.stringify(response, null, 2));
+
+      return response;
+    } catch(err) {
+      const error = err as Error;
+
+      console.error(error);
+      throw new Error(`Error fetching reading from Libre Link Up API. ${error.message}`);
+    }
+  }
+
+  /**
+   * @description Fetch the logbook from the Libre Link Up API. Use to obtain the list of manual scanned readings.
+   * @returns The response from the Libre Link Up API.
+   */
+  public async fetchLogbook() {
+    try {
+      const patientId = await this.getPatientId();
+
+      const headers = {
+        "Account-Id": this.me?.id ? await encryptSha256(this.me.id) : "",
+      };
+
+      const response = await this._fetcher<LibreLogbookResponse>(`${LibreLinkUpEndpoints.Connections}/${patientId}/logbook`, { headers });
+
+      this.verbose("Fetched logbook from Libre Link Up API.", JSON.stringify(response, null, 2));
 
       return response;
     } catch(err) {
