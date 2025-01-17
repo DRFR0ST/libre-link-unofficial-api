@@ -69,6 +69,12 @@ export interface LibreConnectionResponse extends LibreResponse {
   ticket: Ticket;
 }
 
+export interface LibreLogbookResponse extends LibreResponse {
+  status: number;
+  data: RawGlucoseReading[];
+  ticket: Ticket;
+}
+
 export interface LibreActiveSensor {
   sensor: LibreSensor;
   device: LibreDevice;

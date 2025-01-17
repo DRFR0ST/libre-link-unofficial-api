@@ -16,7 +16,7 @@ describe('Libre Link Up API Integrity', () => {
     await client.login();
 
     expect(client.me).toBeTruthy();
-    expect(mapObjectPropertiesToTypes(client.me)).toMatchSnapshot();
+    expect(mapObjectPropertiesToTypes(client.me!)).toMatchSnapshot();
   });
 
   test('should successfully fetch connections', async () => {
@@ -33,6 +33,14 @@ describe('Libre Link Up API Integrity', () => {
     expect(typeof glucoseReading.value).toBe("number");
     expect(glucoseReading.timestamp instanceof Date).toBe(true);
     expect(mapObjectPropertiesToTypes(glucoseReading._raw)).toMatchSnapshot();
+  });
+
+  test('should successfully read logbook', async () => {
+    const glucoseReadings = await client.history();
+
+    expect(glucoseReadings).toBeTruthy();
+    expect(typeof glucoseReadings[0].value).toBe("number");
+    expect(glucoseReadings[0].timestamp instanceof Date).toBe(true);
   });
 
   // TODO: Fix the test.
