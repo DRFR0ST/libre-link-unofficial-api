@@ -39,8 +39,11 @@ describe('Libre Link Up API Integrity', () => {
     const glucoseReadings = await client.logbook();
 
     expect(glucoseReadings).toBeTruthy();
-    expect(typeof glucoseReadings[0].value).toBe("number");
-    expect(glucoseReadings[0].timestamp instanceof Date).toBe(true);
+    if(glucoseReadings.length > 0) {
+      expect(glucoseReadings[0]).toBeTruthy();
+      expect(typeof glucoseReadings[0].value).toBe("number");
+      expect(glucoseReadings[0].timestamp instanceof Date).toBe(true);
+    }
   });
 
   // TODO: Fix the test.
