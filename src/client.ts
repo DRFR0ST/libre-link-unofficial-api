@@ -10,6 +10,7 @@ export class LibreLinkClient {
   private apiUrl = config.apiUrl;
   private accessToken: string | null = null;
   private patientId: string | null = config.patientId || null;
+  private lluVersion: string | undefined;
 
   // A cache for storing fetched data.
   private cache = new Map<string, any>();
@@ -20,6 +21,9 @@ export class LibreLinkClient {
 
     if(options?.patientId)
       this.patientId = options.patientId;
+
+    if(options?.lluVersion)
+      this.lluVersion = options.lluVersion;
 
     // Merge the options with the default options.
     this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -303,7 +307,7 @@ export class LibreLinkClient {
   
       // Libre Link Up API headers
       product: 'llu.android',
-      version: config.lluVersion,
+      version: this.lluVersion || config.lluVersion,
   
       'accept-encoding': 'gzip',
       'cache-control': 'no-cache',
@@ -389,6 +393,7 @@ interface LibreLinkClientOptions {
   password?: string;
   patientId?: string;
   cache?: boolean;
+  lluVersion?: string;
 }
 
 const DEFAULT_OPTIONS: LibreLinkClientOptions = {
