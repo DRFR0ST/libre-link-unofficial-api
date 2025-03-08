@@ -3,7 +3,7 @@
   "module": "src/index.ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "An unofficial API for Libre Link Up (glucose monitoring system/CGM)",
   "author": "Mike Eling <mike.eling97@gmail.com>",
   "type": "module",
