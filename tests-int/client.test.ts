@@ -15,8 +15,11 @@ describe('Libre Link Up API Integrity', () => {
   test('should successfully login', async () => {
     await client.login();
 
-    expect(client.me).toBeTruthy();
-    expect(mapObjectPropertiesToTypes(client.me!)).toMatchSnapshot();
+    const sampleDevice = client.me?.devices[Object.keys(client.me?.devices)[0]];
+    const processedMe = { ...client.me!, devices: { "a1b2c3d4-e5f6-1789-9abc-def012345678": sampleDevice } }
+
+    expect(processedMe).toBeTruthy();
+    expect(mapObjectPropertiesToTypes(processedMe!)).toMatchSnapshot();
   });
 
   test('should successfully fetch connections', async () => {
