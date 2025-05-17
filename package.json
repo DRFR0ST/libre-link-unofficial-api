@@ -23,11 +23,9 @@
   },
   "devDependencies": {
     "bun-types": "latest",
+    "typescript": "^5.8.3",
     "rimraf": "latest",
     "bun-bagel": "^1.0.8"
-  },
-  "peerDependencies": {
-    "typescript": "latest"
   },
   "files": [
     "dist/*.js",
