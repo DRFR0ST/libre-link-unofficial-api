@@ -248,24 +248,31 @@ export class LibreLinkClient {
   /**
    * @description Get the patient ID from the connections.
    */
-  private async getPatientId() {
+  public async getPatientId() {
     const connections = await this.fetchConnections();
 
     // If there are no connections, throw an error.
     if(!connections.data?.length)
       throw new Error("No connections found. Please ensure that you have a connection with the LibreLinkUp app.");
 
-    // Get the patient ID from the connections, or fallback to the first connection.
-
-    let patientId = connections.data[0].patientId;
-
-    if(this.patientId)
-      connections.data.find(
+    // If a specific patient ID is configured, verify it exists in connections
+    if(this.patientId) {
+      const exists = connections.data.some(
         (connection: LibreConnection) => connection.patientId === this.patientId
-      )?.patientId;
+      );
+
+      if(!exists)
+        throw new Error(`Specified patient ID "${this.patientId}" not found in connections. Available patient IDs: ${connections.data.map((c: LibreConnection) => c.patientId).join(', ')}`);
+
+      this.verbose("Using patient ID:", this.patientId);
+      return this.patientId;
+    }
+
+    // Default to the first connection if no specific patient ID is configured
+    const patientId = connections.data[0].patientId;
 
     if(!patientId)
-      throw new Error(`Patient ID not found in connections. (${this.patientId})`);
+      throw new Error("Patient ID not found in first connection.");
 
     this.verbose("Using patient ID:", patientId);
     return patientId;
