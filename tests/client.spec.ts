@@ -1,6 +1,6 @@
 import { expect, test, afterEach, describe } from "bun:test";
 import { GlucoseReading, LibreLinkClient } from '../src';
-import { LibreLinkConnectionsMock, LibreLinkLoginMock, LibreLinkReadMock } from './mocks';
+import { LibreLinkConnectionsMock, LibreLinkLoginMock, LibreLinkReadMock, LibreLinkMultipleConnectionsMock } from './mocks';
 import { mock, clearMocks } from 'bun-bagel';
 
 describe('LibreLinkClient', () => {
@@ -9,6 +9,7 @@ describe('LibreLinkClient', () => {
   afterEach(() => {
     // Clear pending mocks after each test
     clearMocks();
+    client.clearCache();
   });
 
   test('should be created', () => {
@@ -74,5 +75,93 @@ describe('LibreLinkClient', () => {
     }
 
     expect(readings.length).toBe(5);
+  });
+
+  test('should return first connection patient ID when no patientId specified', async () => {
+    // Mock the fetch method
+    mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
+
+    const patientId = await client.getPatientId();
+
+    expect(patientId).toBe('1a1a1a1a-1a1a-1a1a-1a1a-1a1a1a1a1a1a');
+  });
+
+  test('should throw error when no connections available', async () => {
+    // Mock empty connections
+    mock('llu/connections', { data: { status: 4, data: [] } });
+
+    try {
+      await client.getPatientId();
+      expect(true).toBe(false);
+    } catch (error) {
+      const err = error as Error;
+      expect(err.message).toContain('No connections found');
+    }
+  });
+});
+
+describe('Patient ID selection with specific patientId', () => {
+  afterEach(() => {
+    clearMocks();
+  });
+
+  test('should return specified patient ID when it exists (2nd connection)', async () => {
+    const specificClient = new LibreLinkClient({ 
+      email: 'test@example.com', 
+      password: 'test',
+      patientId: 'patient-xyz-789' 
+    });
+
+    mock('llu/connections', { data: LibreLinkMultipleConnectionsMock });
+
+    const patientId = await specificClient.getPatientId();
+
+    expect(patientId).toBe('patient-xyz-789');
+  });
+
+  test('should return specified patient ID when it exists (3rd connection)', async () => {
+    const specificClient = new LibreLinkClient({ 
+      email: 'test@example.com', 
+      password: 'test',
+      patientId: 'patient-def-456' 
+    });
+
+    mock('llu/connections', { data: LibreLinkMultipleConnectionsMock });
+
+    const patientId = await specificClient.getPatientId();
+
+    expect(patientId).toBe('patient-def-456');
+  });
+
+  test('should throw error when specified patient ID not found', async () => {
+    const specificClient = new LibreLinkClient({ 
+      email: 'test@example.com', 
+      password: 'test',
+      patientId: 'patient-invalid-999' 
+    });
+
+    mock('llu/connections', { data: LibreLinkMultipleConnectionsMock });
+
+    try {
+      await specificClient.getPatientId();
+      expect(true).toBe(false);
+    } catch (error) {
+      const err = error as Error;
+      expect(err.message).toContain('Specified patient ID "patient-invalid-999" not found in connections');
+    }
+  });
+
+  test('should work with single connection when patient ID matches', async () => {
+    const specificClient = new LibreLinkClient({ 
+      email: 'test@example.com', 
+      password: 'test',
+      patientId: '1a1a1a1a-1a1a-1a1a-1a1a-1a1a1a1a1a1a' 
+    });
+
+    mock('llu/connections', { data: { data: LibreLinkConnectionsMock.data } });
+
+    const patientId = await specificClient.getPatientId();
+
+    expect(patientId).toBe('1a1a1a1a-1a1a-1a1a-1a1a-1a1a1a1a1a1a');
   });
 });
