@@ -1,6 +1,6 @@
 import { config } from "./config";
 import { GlucoseReading } from "./reading";
-import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse, LibreLogbookResponse } from "./types";
+import { LibreLinkUpEndpoints, LibreLoginResponse, LibreResponse, LibreRedirectResponse, LibreUser, LibreConnection, LibreConnectionResponse, LibreConnectionsResponse, LibreLogbookResponse } from "./types";
 import { encryptSha256, parseUser } from "./utils";
 
 /**
@@ -218,17 +218,17 @@ export class LibreLinkClient {
   /**
    * @description Get the connections from the Libre Link Up API.
    */
-  public async fetchConnections() {
+  public async fetchConnections(): Promise<LibreConnectionsResponse> {
     try {
       if(this.cache.has("connections"))
-        return this.cache.get("connections");
+        return this.cache.get("connections") as LibreConnectionsResponse;
 
       const headers = {
         "Account-Id": this.me?.id ? await encryptSha256(this.me.id) : "",
       };
 
       // Fetch the connections from the Libre Link Up API.
-      const connections = await this._fetcher(LibreLinkUpEndpoints.Connections, { headers });
+      const connections = await this._fetcher<LibreConnectionsResponse>(LibreLinkUpEndpoints.Connections, { headers });
 
       this.verbose(`Fetched ${connections?.data?.length} connections from Libre Link Up API.`, JSON.stringify(connections, null, 2));
 
