@@ -262,7 +262,7 @@ export class LibreLinkClient {
       );
 
       if(!exists)
-        throw new Error(`Specified patient ID "${this.patientId}" not found in connections. Available patient IDs: ${connections.data.map((c: LibreConnection) => c.patientId).join(', ')}`);
+        throw new Error(`Specified patient ID "${this.patientId}" not found in connections.`);
 
       this.verbose("Using patient ID:", this.patientId);
       return this.patientId;

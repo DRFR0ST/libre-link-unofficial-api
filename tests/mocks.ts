@@ -182,3 +182,31 @@ export const LibreLinkConnectionsMock = {
 };
 
 export const LibreLinkReadMock = { connection: LibreLinkConnectionsMock.data[0] }
+
+// Mock with multiple connections for testing patient ID selection
+export const LibreLinkMultipleConnectionsMock = {
+    "status": 4,
+    "data": [
+        {
+            ...LibreLinkConnectionsMock.data[0],
+            "patientId": "patient-abc-123",
+            "firstName": "Alice",
+            "lastName": "Smith",
+        },
+        {
+            ...LibreLinkConnectionsMock.data[0],
+            "id": "a1b2c3d4-5678-90ab-cdef-123456789012",
+            "patientId": "patient-xyz-789",
+            "firstName": "Bob",
+            "lastName": "Johnson",
+        },
+        {
+            ...LibreLinkConnectionsMock.data[0],
+            "id": "e5f6a7b8-9012-34cd-ef56-789012345678",
+            "patientId": "patient-def-456",
+            "firstName": "Charlie",
+            "lastName": "Brown",
+        }
+    ],
+    "ticket": LibreLinkConnectionsMock.ticket
+};
