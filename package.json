@@ -1,7 +1,13 @@
 {
   "name": "libre-link-unofficial-api",
-  "module": "src/index.ts",
   "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "types": "dist/index.d.ts",
   "version": "1.0.0-alpha.7",
   "description": "An unofficial API for Libre Link Up (glucose monitoring system/CGM)",

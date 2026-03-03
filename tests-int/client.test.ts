@@ -3,7 +3,10 @@ import { LibreLinkClient } from '../src';
 import { mapObjectPropertiesToTypes } from "./utils";
 
 describe('Libre Link Up API Integrity', () => {
-  const client: LibreLinkClient = new LibreLinkClient();
+  const client: LibreLinkClient = new LibreLinkClient({
+    email: process.env.LIBRE_LINK_EMAIL || "test@example.com",
+    password: process.env.LIBRE_LINK_PASSWORD || "password123",
+  });
 
   // Wait for a couple of seconds between tests to avoid 429 too many requests errors.
   beforeEach(() => new Promise((resolve) => setTimeout(resolve, 5000)));
@@ -42,7 +45,7 @@ describe('Libre Link Up API Integrity', () => {
     const glucoseReadings = await client.logbook();
 
     expect(glucoseReadings).toBeTruthy();
-    if(glucoseReadings.length > 0) {
+    if (glucoseReadings.length > 0) {
       expect(glucoseReadings[0]).toBeTruthy();
       expect(typeof glucoseReadings[0].value).toBe("number");
       expect(glucoseReadings[0].timestamp instanceof Date).toBe(true);

@@ -1,10 +1,16 @@
+const getEnv = (key: string) => {
+    if (typeof process !== "undefined" && process?.env) {
+        return process.env[key];
+    }
+    return undefined;
+};
 
-const LIBRE_LINK_API_URL = process?.env?.LIBRE_LINK_API_URL ?? "https://api-us.libreview.io";
-const LIBRE_LINK_EMAIL = process?.env?.LIBRE_LINK_EMAIL;
-const LIBRE_LINK_PASSWORD = process?.env?.LIBRE_LINK_PASSWORD;
-const LIBRE_LINK_UP_VERSION = process?.env?.LIBRE_LINK_UP_VERSION ?? "4.16.0";
-const LIBRE_LINK_PATIENT_ID = process?.env?.LIBRE_LINK_PATIENT_ID;
-const VERBOSE = process?.env?.VERBOSE === "true";
+const LIBRE_LINK_API_URL = getEnv("LIBRE_LINK_API_URL") ?? "https://api-us.libreview.io";
+const LIBRE_LINK_EMAIL = getEnv("LIBRE_LINK_EMAIL");
+const LIBRE_LINK_PASSWORD = getEnv("LIBRE_LINK_PASSWORD");
+const LIBRE_LINK_UP_VERSION = getEnv("LIBRE_LINK_UP_VERSION") ?? "4.16.0";
+const LIBRE_LINK_PATIENT_ID = getEnv("LIBRE_LINK_PATIENT_ID");
+const VERBOSE = getEnv("VERBOSE") === "true";
 
 /**
  * @description Configuration for the Libre Link Up API client.
