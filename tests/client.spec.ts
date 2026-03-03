@@ -4,7 +4,10 @@ import { LibreLinkConnectionsMock, LibreLinkLoginMock, LibreLinkReadMock } from 
 import { mock, clearMocks } from 'bun-bagel';
 
 describe('LibreLinkClient', () => {
-  const client: LibreLinkClient = new LibreLinkClient();
+  const client: LibreLinkClient = new LibreLinkClient({
+    email: process.env.LIBRE_LINK_EMAIL || "test@example.com",
+    password: process.env.LIBRE_LINK_PASSWORD || "password123"
+  });
 
   afterEach(() => {
     // Clear pending mocks after each test
@@ -18,7 +21,7 @@ describe('LibreLinkClient', () => {
   test('should successfully login', async () => {
     // Mock the fetch method
     mock('llu/auth/login', { data: { data: LibreLinkLoginMock }, method: "POST" });
-    
+
     await client.login();
 
     expect(client.me).toBeTruthy();

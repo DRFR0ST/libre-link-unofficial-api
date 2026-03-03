@@ -19,10 +19,13 @@ export class LibreLinkClient {
     if (!options?.email && !config.credentials.email)
       throw new Error("Libre Link Up credentials are missing.");
 
-    if(options?.patientId)
+    if (options?.apiUrl)
+      this.apiUrl = options.apiUrl;
+
+    if (options?.patientId)
       this.patientId = options.patientId;
 
-    if(options?.lluVersion)
+    if (options?.lluVersion)
       this.lluVersion = options.lluVersion;
 
     // Merge the options with the default options.
@@ -33,7 +36,7 @@ export class LibreLinkClient {
    * @description Get the user data. Only available after logging in.
    */
   public get me(): LibreUser | null {
-    if(!this.cache.has("user")) {
+    if (!this.cache.has("user")) {
       console.warn("User data is not available. Please log in first.");
       return null;
     }
@@ -47,10 +50,10 @@ export class LibreLinkClient {
   public async login(): Promise<LibreLoginResponse> {
     const email = this.options?.email || config.credentials.email;
     const password = this.options?.password || config.credentials.password;
-    
+
     try {
       type LoginResponse = LibreLoginResponse | LibreRedirectResponse;
-      
+
       // Attempt to login to the Libre Link Up API.
       const response = await this._fetcher<LoginResponse>(LibreLinkUpEndpoints.Login, {
         method: "POST",
@@ -59,21 +62,21 @@ export class LibreLinkClient {
           password
         }),
       });
-  
+
       // If the status is 2, means the credentials are invalid.
-      if(response.status === 2)
+      if (response.status === 2)
         throw new Error("Invalid credentials. Please ensure that the email and password work with the LibreLinkUp app.");
 
-      if(!response.data) 
+      if (!response.data)
         throw new Error("No data returned from Libre Link Up API.");
 
       // If the response contains a redirect, update the region and try again.
-      if("redirect" in response.data) {
+      if ("redirect" in response.data) {
         this.verbose("Redirecting to region:", response.data.region);
         const regionUrl = await this.findRegion(response.data.region);
         // Update the API URL with the region url.
         this.apiUrl = regionUrl;
-        
+
         return await this.login();
       }
 
@@ -86,7 +89,7 @@ export class LibreLinkClient {
       this.verbose("Logged into Libre Link Up API.");
 
       return response as LibreLoginResponse;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -104,7 +107,7 @@ export class LibreLinkClient {
 
       // Parse and return the latest glucose item from the response.
       return new GlucoseReading(response.data?.connection.glucoseItem, response.data.connection);
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -122,7 +125,7 @@ export class LibreLinkClient {
       const list = response.data.graphData.map((item) => new GlucoseReading(item, response.data.connection));
 
       return list;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -140,7 +143,7 @@ export class LibreLinkClient {
       const list = response.data.map((item) => new GlucoseReading(item));
 
       return list;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -159,7 +162,7 @@ export class LibreLinkClient {
         yield reading;
         await new Promise(resolve => setTimeout(resolve, intervalMs));
       } catch (error) {
-        console.error("Error fetching reading:", error); 
+        console.error("Error fetching reading:", error);
         throw error;
       }
     }
@@ -182,7 +185,7 @@ export class LibreLinkClient {
       this.verbose("Fetched reading from Libre Link Up API.", JSON.stringify(response, null, 2));
 
       return response;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -207,7 +210,7 @@ export class LibreLinkClient {
       this.verbose("Fetched logbook from Libre Link Up API.", JSON.stringify(response, null, 2));
 
       return response;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -220,7 +223,7 @@ export class LibreLinkClient {
    */
   public async fetchConnections() {
     try {
-      if(this.cache.has("connections"))
+      if (this.cache.has("connections"))
         return this.cache.get("connections");
 
       const headers = {
@@ -232,12 +235,12 @@ export class LibreLinkClient {
 
       this.verbose(`Fetched ${connections?.data?.length} connections from Libre Link Up API.`, JSON.stringify(connections, null, 2));
 
-      if(!!connections?.data?.length)
+      if (!!connections?.data?.length)
         // Cache the connections for future use.
         this.setCache("connections", connections);
 
       return connections;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -252,19 +255,19 @@ export class LibreLinkClient {
     const connections = await this.fetchConnections();
 
     // If there are no connections, throw an error.
-    if(!connections.data?.length)
+    if (!connections.data?.length)
       throw new Error("No connections found. Please ensure that you have a connection with the LibreLinkUp app.");
 
     // Get the patient ID from the connections, or fallback to the first connection.
 
     let patientId = connections.data[0].patientId;
 
-    if(this.patientId)
+    if (this.patientId)
       connections.data.find(
         (connection: LibreConnection) => connection.patientId === this.patientId
       )?.patientId;
 
-    if(!patientId)
+    if (!patientId)
       throw new Error(`Patient ID not found in connections. (${this.patientId})`);
 
     this.verbose("Using patient ID:", patientId);
@@ -283,11 +286,11 @@ export class LibreLinkClient {
       // Find the region in the response.
       const lslApi = response.data?.regionalMap[region]?.lslApi;
 
-      if(!lslApi)
+      if (!lslApi)
         throw new Error("Region not found in Libre Link Up API.");
 
       return lslApi;
-    } catch(err) {
+    } catch (err) {
       const error = err as Error;
 
       console.error(error);
@@ -304,17 +307,17 @@ export class LibreLinkClient {
     const headers = new Headers({
       ...options.headers,
       Authorization: this.accessToken ? `Bearer ${this.accessToken}` : "",
-  
+
       // Libre Link Up API headers
       product: 'llu.android',
       version: this.lluVersion || config.lluVersion,
-  
+
       'accept-encoding': 'gzip',
       'cache-control': 'no-cache',
       connection: 'Keep-Alive',
       'content-type': 'application/json',
     });
-    
+
     const requestOptions: FetchRequestInit = Object.freeze({
       ...options,
       headers
@@ -333,10 +336,10 @@ export class LibreLinkClient {
       );
 
       if (!response.ok) {
-        const errorPayload = await response.json(); 
+        const errorPayload = await response.json();
         const errorMessage = errorPayload?.message ?? JSON.stringify(errorPayload, null, 2)
-        
-        if(response.status === 429)
+
+        if (response.status === 429)
           throw new Error(`Too many requests. Please wait before trying again. ${errorMessage}`);
 
         throw new Error(
@@ -366,7 +369,7 @@ export class LibreLinkClient {
    * @param args
    */
   private verbose(...args: any[]) {
-    if (config.verbose) console.log(...args);
+    if (this.options.verbose ?? config.verbose) console.log(...args);
   }
 
   /**
@@ -375,7 +378,7 @@ export class LibreLinkClient {
    * @param value The value to cache.
    */
   private setCache(key: string, value: any) {
-    if(!this.options.cache) return;
+    if (!this.options.cache) return;
 
     this.cache.set(key, value);
   }
@@ -394,6 +397,8 @@ interface LibreLinkClientOptions {
   patientId?: string;
   cache?: boolean;
   lluVersion?: string;
+  apiUrl?: string;
+  verbose?: boolean;
 }
 
 const DEFAULT_OPTIONS: LibreLinkClientOptions = {
